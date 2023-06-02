@@ -1,3 +1,4 @@
+/*
 .header {
   position: fixed;
   top: 0;
@@ -15,7 +16,6 @@ line-height: 24px;
 color: #FFFFFF;
 
 }
-
 
 body {
   position: relative;
@@ -128,10 +128,10 @@ background-color: cadetblue;
 
     color: white;
 }
-
+*/
 /*register*/
 
-
+/*
 .register_background {
 position: relative;
 width: 390px;
@@ -160,9 +160,11 @@ font-weight: 700;
 font-size: 30px;
 line-height: 16px;
 white-space: nowrap;
+
+*/
 /* identical to box height */
 
-
+/*
 color: dimgrey;
 }
 
@@ -226,9 +228,11 @@ color: #FFFFFF;
 }
 
 
-
+*/
 
 /*top up page*/
+
+/*
 .topUp_background {
 position: relative;
 width: 390px;
@@ -612,3 +616,5 @@ color: #FFFFFF;
 .topUp_button:hover {
  background-color: cadetblue;
 }
+
+*/

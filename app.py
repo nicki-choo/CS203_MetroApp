@@ -8,6 +8,7 @@ app = Flask(__name__)
 def main():  # put application's code here
     return render_template('register.html')
 
+
 @app.route('/top_up', methods=['GET'])
 def top_up():
     return render_template('topUpCard.html')
@@ -44,6 +45,11 @@ def home():
 @app.route('/login', methods=['GET'])
 def login():
     return render_template('login.html')
+
+
+@app.route('/fares')
+def fares():
+    return render_template('fares.html')
 
 
 if __name__ == '__main__':
