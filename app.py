@@ -60,8 +60,6 @@ def register_user():
 
     conn.commit()
 
-    send_verification_email()
-
     flash('Registration successful! Please check your email for verification.')
 
     return redirect('/login')
