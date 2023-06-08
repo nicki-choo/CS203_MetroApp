@@ -41,6 +41,13 @@ def view_data():
 
 
 @app.route('/register', methods=['POST'])
+def send_verification_email():
+    msg = Message("Welcome to MetroBus",
+                  sender='nickidummyacc@gmail.com',
+                  recipients=["270168718@yoobeestudent.ac.nz"])
+    msg.body = 'Hello Flask message sent from Flask-Mail'
+    mail.send(msg)
+
 def register_user():
     conn = sqlite3.connect('users.sqlite')
     cursor = conn.cursor()
@@ -65,12 +72,7 @@ def register_user():
     # Redirect to the login page
     return redirect(url_for('login'))
 
-def send_verification_email():
-    msg = Message("Welcome to MetroBus",
-                  sender='nickidummyacc@gmail.com',
-                  recipients=["270168718@yoobeestudent.ac.nz"])
-    msg.body = 'Hello Flask message sent from Flask-Mail'
-    mail.send(msg)
+
 
 
 
