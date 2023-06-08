@@ -34,10 +34,14 @@ document.getElementById("loginButton").addEventListener("click", handleLogin);
   })
 })()
 
-setTimeout(function() {
-    var flashMessage = document.getElementById('flash-message');
-    if (flashMessage) {
-      flashMessage.remove();
-    }
-  }, 5000);
+function hideFlashMessage() {
+  var flashMessage = document.getElementById('flash-message');
+  if (flashMessage) {
+    setTimeout(function() {
+      flashMessage.style.display = 'none';
+    }, 3000); // Change the duration (in milliseconds) as needed
+  }
+}
 
+// Call the hideFlashMessage function when the page loads
+window.addEventListener('DOMContentLoaded', hideFlashMessage);
