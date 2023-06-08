@@ -35,13 +35,20 @@ document.getElementById("loginButton").addEventListener("click", handleLogin);
 })()
 
 function hideFlashMessage() {
+  console.log('hideFlashMessage called'); // Check if the function is being called
+
   var flashMessage = document.getElementById('flash-message');
-  if (flashMessage) {
-    setTimeout(function() {
-      flashMessage.style.display = 'none';
-    }, 3000); // Change the duration (in milliseconds) as needed
+  console.log(flashMessage); // Verify if the element is correctly retrieved
+
+  function hideFlashMessage() {
+    var flashMessage = document.getElementById('flash-message');
+    if (flashMessage) {
+      setTimeout(function () {
+        flashMessage.style.display = 'none';
+      }, 3000); // Change the duration (in milliseconds) as needed
+    }
   }
-}
 
 // Call the hideFlashMessage function when the page loads
-window.addEventListener('DOMContentLoaded', hideFlashMessage);
+  window.addEventListener('DOMContentLoaded', hideFlashMessage);
+}

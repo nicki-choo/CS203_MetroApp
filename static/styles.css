@@ -32,7 +32,7 @@ font-weight: 500;
 font-size: 20px;
 line-height: 24px;
 
-color: #FFFFFF;
+color: black;
 
 }
 
@@ -631,7 +631,9 @@ color: #FFFFFF;
 
 .flash-message {
     position: absolute;
-    top: 50%;
-    left: 50%;
+   width: 800px;
+height: 15px;
+left: 35px;
+top: 680px;
     transform: translate(-50%, -50%);
 }
