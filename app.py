@@ -41,13 +41,6 @@ def view_data():
 
 
 @app.route('/register', methods=['POST'])
-def send_verification_email():
-    msg = Message("Welcome to MetroBus",
-                  sender='nickidummyacc@gmail.com',
-                  recipients=["270168718@yoobeestudent.ac.nz"])
-    msg.body = 'Hello Flask message sent from Flask-Mail'
-    mail.send(msg)
-
 def register_user():
     conn = sqlite3.connect('users.sqlite')
     cursor = conn.cursor()
@@ -66,14 +59,21 @@ def register_user():
 
     conn.commit()
 
+    # Send verification email
+    send_verification_email(data_model['email'])
+
     # Show flash message after successful registration
     flash('Registration successful! Please check your email for verification.')
 
     # Redirect to the login page
     return redirect(url_for('login'))
 
-
-
+def send_verification_email(email):
+    msg = Message("Welcome to MetroBus",
+                  sender='nickidummyacc@gmail.com',
+                  recipients=['270168718@yoobee.ac.nz'])
+    msg.body = 'Hello, your account has been registered successfully. Please verify your email.'
+    mail.send(msg)
 
 
 @app.route('/', methods=['GET'])
