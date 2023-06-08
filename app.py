@@ -15,7 +15,14 @@ def top_up():
 
 @app.route('/view_data', methods=['GET'])
 def view_data():
-    return 'users.sqlite'
+    conn = sqlite3.connect('users.sqlite')
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT * FROM users")
+    users = cursor.fetchall()
+
+    return users
+
 
 
 @app.route('/register', methods=['POST'])
