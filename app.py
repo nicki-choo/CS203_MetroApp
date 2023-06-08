@@ -67,7 +67,7 @@ def register_user():
     return redirect('/login')
 
 def send_verification_email():
-    msg = Message("Welcome to Flask Email",
+    msg = Message("Welcome to MetroBus",
                   sender='nickidummyacc@gmail.com',
                   recipients=["270168718@yoobeestudent.ac.nz"])
     msg.body = 'Hello Flask message sent from Flask-Mail'
