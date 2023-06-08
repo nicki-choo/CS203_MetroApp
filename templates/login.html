@@ -6,17 +6,18 @@
 
 {% block body %}
 <div id="clock"></div>
-<div class="container-sm position-absolute top-50 start 50 translate-middle">
-<div class="mb-3 row">
-    <label for="staticUserName" class="col-sm-2 col-form-label">Email</label>
-    <input type="text" class="form-control" id="staticUserName">
+<div class="container-sm col-6 position-absolute top-50 start-50 translate-middle">
+    <div class="mb-3 row">
+        <label for="staticUserName" class="col-sm-2 col-form-label">Email</label>
+        <input type="text" class="form-control" id="staticUserName">
+    </div>
+    <div class="mb-3 row">
+        <label for="inputPassword" class="form-label">Password</label>
+        <input type="password" class="form-control" id="inputPassword">
+    </div>
+    <button type="submit" class="btn btn-primary position-relative translate-middle-x start-50">Submit</button>
 </div>
-<div class="mb-3">
-    <label for="inputPassword" class="form-label">Password</label>
-    <input type="password" class="form-control" id="inputPassword">
-</div>
-<button type="submit" class="btn btn-primary">Submit</button>
-</div>
+
 <!--<div class="container">-->
 <!--    <div class="clock"></div>-->
 <!--    <form>-->
