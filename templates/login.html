@@ -4,16 +4,6 @@
 <title>Login</title>
 {%  endblock %}
 
-{% with messages = get_flashed_messages() %}
-  {% if messages %}
-    <div id="flash-message">
-      {% for message in messages %}
-        <p>{{ Registration successful! Please check your email for verification. }}</p>
-      {% endfor %}
-    </div>
-  {% endif %}
-{% endwith %}
-
 
 {% block body %}
 <div id="clock"></div>
@@ -28,6 +18,16 @@
     </div>
     <button type="submit" class="btn btn-primary position-relative translate-middle-x start-50">Submit</button>
 </div>
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <div id="flash-message">
+      {% for message in messages %}
+        <p>{{ Registration successful! Please check your email for verification. }}</p>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
 
 <!--<div class="container">-->
 <!--    <div class="clock"></div>-->
