@@ -48,7 +48,7 @@ def register_user():
     return redirect('/login')
 
 
-@app.route('/home', methods=['GET'])
+@app.route('/', methods=['GET'])
 def home():
     return render_template('index.html')
 

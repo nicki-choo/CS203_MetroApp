@@ -1,3 +1,22 @@
+html {
+    height: 100%;
+}
+
+header {
+}
+
+body {
+background-image: linear-gradient(
+}
+
+
+
+footer {
+    display: block;
+    float: bottom;
+    text-align: right;
+}
+
 
 .header {
   position: fixed;
@@ -16,13 +35,6 @@ line-height: 24px;
 color: #FFFFFF;
 
 }
-
-body {
-  position: relative;
-  width: 390px;
-  height: 844px;
-
-  background: linear-gradient(180deg, #3D79A6 24.95%, rgba(61, 121, 166, 0.34) 100%);}
 
 
 .metro_logo{
@@ -128,7 +140,7 @@ background-color: cadetblue;
 
     color: white;
 }
-
+*/
 /*register*/
 
 
@@ -154,20 +166,18 @@ height: 16px;
 left: 10px;
 top: 80px;
 
-font-family: "PT Sans", serif;
+    font-family: "PT Sans", serif;
 font-style: italic ;
 font-weight: 700;
 font-size: 30px;
 line-height: 16px;
 white-space: nowrap;
 
-color: white;
-
-
+*/
 /* identical to box height */
 
 
-
+color: dimgrey;
 }
 
 .register-form-group {
@@ -180,8 +190,7 @@ top: 160px;
 
 .register-form-group label {
     font-weight: bold;
-   text-align: left;
-  color: white;
+  color: dimgray;
     font-family: "PT Sans", serif;
 
 }
@@ -205,8 +214,8 @@ font-size: 18px;
 position: absolute;
 width: 130px;
 height: 40px;
-left: 590px;
-top: 750px;
+left: 200px;
+top: 180px;
 
 filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 box-sizing: border-box;
@@ -231,7 +240,7 @@ color: #FFFFFF;
 }
 
 
-
+*/
 
 /*top up page*/
 
@@ -619,5 +628,3 @@ color: #FFFFFF;
 .topUp_button:hover {
  background-color: cadetblue;
 }
-
-
