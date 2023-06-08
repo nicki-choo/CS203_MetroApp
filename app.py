@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect, flash
+from flask import Flask, request, render_template, redirect, flash, url_for
 from flask_mail import Mail, Message
 import sqlite3
 import os
@@ -52,7 +52,6 @@ def register_user():
         'username': data_obj_to_save['username'],
         'email': data_obj_to_save['email'],
         'password': data_obj_to_save['password']
-
     }
 
     sql_query = """INSERT INTO users (username, email, password) VALUES (?,?,?)"""
@@ -60,7 +59,11 @@ def register_user():
 
     conn.commit()
 
-    return redirect('/login')
+    # Show flash message after successful registration
+    flash('Registration successful! Please check your email for verification.')
+
+    # Redirect to the login page
+    return redirect(url_for('login'))
 
 def send_verification_email():
     msg = Message("Welcome to MetroBus",
@@ -78,10 +81,7 @@ def home():
 
 @app.route('/login', methods=['GET'])
 def login():
-    message = 'Registration successful! Please check your email for verification.'
-    flash(message)
-
-    return render_template('login.html', message=message)
+    return render_template('login.html')
 
 
 
