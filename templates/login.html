@@ -21,8 +21,8 @@
 
 {% with messages = get_flashed_messages() %}
   {% if messages %}
-    <div class="flash-message">
-      <p>Registration successful! Please check your email for verification.</p>
+    <div id="flash-message" class="alert alert-success">
+      Registration successful! Please check your email for verification
     </div>
   {% endif %}
 {% endwith %}
