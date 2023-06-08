@@ -633,8 +633,8 @@ color: #FFFFFF;
     position: absolute;
    width: 800px;
 height: 60px;
-left: 600px;
-top: 500px;
+left: 650px;
+top: 450px;
     transform: translate(-50%, -50%);
 }
 
@@ -648,5 +648,5 @@ top: 500px;
 }
 
 .fade-out {
-  animation: fadeOut 10s forwards;
+  animation: fadeOut 7s forwards;
 }
