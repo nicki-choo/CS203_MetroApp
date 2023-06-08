@@ -632,8 +632,8 @@ color: #FFFFFF;
 #flash-message {
     position: absolute;
    width: 800px;
-height: 15px;
-left: 35px;
-top: 680px;
+height: 50px;
+left: 400px;
+top: 500px;
     transform: translate(-50%, -50%);
 }
