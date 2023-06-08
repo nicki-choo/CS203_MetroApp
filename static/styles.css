@@ -632,8 +632,8 @@ color: #FFFFFF;
 #flash-message {
     position: absolute;
    width: 800px;
-height: 100px;
-left: 550px;
+height: 60px;
+left: 600px;
 top: 500px;
     transform: translate(-50%, -50%);
 }
@@ -648,5 +648,5 @@ top: 500px;
 }
 
 .fade-out {
-  animation: fadeOut 5s forwards;
+  animation: fadeOut 10s forwards;
 }
