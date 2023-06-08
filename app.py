@@ -13,6 +13,10 @@ def main():  # put application's code here
 def top_up():
     return render_template('topUpCard.html')
 
+@app.route('/view_data', methods=['GET'])
+def view_data():
+    return 'users.sqlite'
+
 
 @app.route('/register', methods=['POST'])
 def register_user():
