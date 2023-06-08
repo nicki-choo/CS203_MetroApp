@@ -21,10 +21,8 @@
 
 {% with messages = get_flashed_messages() %}
   {% if messages %}
-    <div id="flash-message">
-      {% for message in messages %}
-        <p>{{ Registration successful! Please check your email for verification. }}</p>
-      {% endfor %}
+    <div class="flash-message">
+      <p>Registration successful! Please check your email for verification.</p>
     </div>
   {% endif %}
 {% endwith %}
