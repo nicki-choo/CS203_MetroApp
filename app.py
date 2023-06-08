@@ -60,8 +60,6 @@ def register_user():
 
     conn.commit()
 
-    flash('Registration successful! Please check your email for verification.')
-
     return redirect('/login')
 
 def send_verification_email():
@@ -83,8 +81,11 @@ def login():
     message = None
     if 'message' in request.args:
         message = request.args['message']
+    flash('Registration successful! Please check your email for verification.')
 
     return render_template('login.html', message=message)
+
+
 
 
 @app.route('/fares')
