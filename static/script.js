@@ -33,3 +33,16 @@ document.getElementById("loginButton").addEventListener("click", handleLogin);
     }, false)
   })
 })()
+
+ // Function to hide the flash message after a specified time
+  function hideFlashMessage() {
+    var flashMessage = document.getElementById('flash-message');
+    if (flashMessage) {
+      setTimeout(function() {
+        flashMessage.style.display = 'none';
+      }, 5000); // 5000 milliseconds = 5 seconds
+    }
+  }
+
+  // Call the function when the page loads
+  window.onload = hideFlashMessage;

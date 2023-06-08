@@ -4,6 +4,17 @@
 <title>Login</title>
 {%  endblock %}
 
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <div id="flash-message">
+      {% for message in messages %}
+        <p>{{ message }}</p>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+
 {% block body %}
 <div id="clock"></div>
 <div class="container-sm col-6 position-absolute top-50 start-50 translate-middle">

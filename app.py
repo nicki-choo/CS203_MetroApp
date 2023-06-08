@@ -1,7 +1,22 @@
-from flask import Flask, request, render_template, redirect
+from flask import Flask, request, render_template, redirect, url_for, flash
+from flask_mail import Mail, Message
 import sqlite3
+import os
+from dotenv import load_dotenv
 
 app = Flask(__name__)
+app.secret_key = 'your-secret-key'
+mail = Mail(app)
+
+load_dotenv()
+
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = 'nickidummyacc@gmail.com'
+app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
+app.config['MAIL_USE_SSL'] = True
+app.config['MAIL_USE_TLS'] = False
+mail = Mail(app)
 
 
 @app.route('/user_info', methods=['GET'])
@@ -45,7 +60,20 @@ def register_user():
 
     conn.commit()
 
+    send_verification_email()
+
+    flash('Registration successful! Please check your email for verification.')
+
     return redirect('/login')
+
+def send_verification_email():
+    msg = Message("Welcome to Flask Email",
+                  sender='nickidummyacc@gmail.com',
+                  recipients=["270168718@yoobeestudent.ac.nz"])
+    msg.body = 'Hello Flask message sent from Flask-Mail'
+    mail.send(msg)
+
+    return 'Email Sent Successfully!'
 
 
 @app.route('/', methods=['GET'])
@@ -55,7 +83,11 @@ def home():
 
 @app.route('/login', methods=['GET'])
 def login():
-    return render_template('login.html')
+    message = None
+    if 'message' in request.args:
+        message = request.args['message']
+
+    return render_template('login.html', message=message)
 
 
 @app.route('/fares')
