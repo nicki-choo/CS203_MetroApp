@@ -71,7 +71,7 @@ def register_user():
 def send_verification_email(email):
     msg = Message("Welcome to MetroBus",
                   sender='nickidummyacc@gmail.com',
-                  recipients=['270168718@yoobee.ac.nz'])
+                  recipients=['270168718@yoobeestudent.ac.nz'])
     msg.body = 'Hello, your account has been registered successfully. Please verify your email.'
     mail.send(msg)
 
