@@ -629,7 +629,7 @@ color: #FFFFFF;
  background-color: cadetblue;
 }
 
-.flash-message {
+#flash-message {
     position: absolute;
    width: 800px;
 height: 15px;
