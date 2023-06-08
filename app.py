@@ -78,7 +78,10 @@ def home():
 
 @app.route('/login', methods=['GET'])
 def login():
-    return render_template('login.html')
+    message = 'Registration successful! Please check your email for verification.'
+    flash(message)
+
+    return render_template('login.html', message=message)
 
 
 
