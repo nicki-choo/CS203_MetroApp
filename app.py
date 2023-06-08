@@ -73,7 +73,6 @@ def send_verification_email():
     msg.body = 'Hello Flask message sent from Flask-Mail'
     mail.send(msg)
 
-    return 'Email Sent Successfully!'
 
 
 @app.route('/', methods=['GET'])
