@@ -1,0 +1,652 @@
+html {
+    height: 100%;
+}
+
+header {
+}
+
+body {
+background-image: linear-gradient()
+}
+
+
+
+footer {
+    display: block;
+    float: bottom;
+    text-align: right;
+}
+
+
+.header {
+  position: fixed;
+  top: 0;
+  right: 0;
+  padding: 10px;
+}
+
+#clock{
+    font-family: "PT Sans", serif;
+font-style: italic;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: black;
+
+}
+
+
+.metro_logo{
+    background-image: url("/static/Buttons-Logo etc/MetroBus_Logo.png");
+    position: absolute;
+    width: 405px;
+    height: 123px;
+    left: 500px;
+    top: 150px;
+  }
+
+.container {
+position: absolute;
+width: 72px;
+height: 18px;
+left: 390px;
+top: 380px;
+}
+
+form {
+width: 400px;
+    font-family: 'PT Sans', serif;
+font-style: normal;
+margin: 10px;
+font-weight: 600;
+font-size: 20px;
+
+color: #FFFFFF;
+}
+
+.form-group {
+display: flex;
+align-items: center;
+gap: 30px;
+left: 500px;
+}
+
+label {
+  width: 300px;
+  text-align: right;
+
+}
+
+input[type="text"],
+input[type="password"] {
+flex: 3;
+    font-family: 'PT Sans', serif;
+font-style: normal;
+padding: 5px;
+margin: 10px;
+font-weight: 500;
+font-size: 18px;
+background-color: transparent;
+border-color: gray;
+
+color: black;
+}
+
+.login_button {
+position: absolute;
+width: 130px;
+height: 40px;
+left: 200px;
+top: 200px;
+
+filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+box-sizing: border-box;
+padding-bottom: 3px;
+
+background: #1A5E8F;
+border: 1px solid #2A286A;
+border-radius: 5px;
+
+font-family: Helvetica;
+font-style: italic;
+font-weight: 700;
+font-size: 15px;
+line-height: 18px;
+
+color: #FFFFFF;
+}
+
+.login_button:hover {
+background-color: cadetblue;
+}
+
+
+
+.register_card {
+    position: absolute;
+    width: 113px;
+    height: 12px;
+    left: 200px;
+    top: 300px;
+
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 12px;
+    white-space: nowrap;
+    text-decoration-line: underline;
+
+    color: white;
+}
+
+/*register*/
+
+
+.register_background {
+position: relative;
+width: 390px;
+height: 844px;
+
+background: linear-gradient(180deg, rgba(216, 235, 232, 0) 50%, #D8EBE8 100%);
+}
+
+.metro_logo\(register\){
+background-image: url("/static/Buttons-Logo etc/colored_metrologo.png");
+    position: absolute;
+    width: 225px;
+    height: 70px;
+    left: 550px;
+}
+.create_acc_title {
+position: absolute;
+width: 91px;
+height: 16px;
+left: 10px;
+top: 80px;
+
+    font-family: "PT Sans", serif;
+font-style: italic ;
+font-weight: 700;
+font-size: 30px;
+line-height: 16px;
+white-space: nowrap;
+
+
+/* identical to box height */
+
+
+color: dimgrey;
+}
+
+.register-form-group {
+position: relative;
+left: 450px;
+top: 160px;
+ margin-bottom: 20px;
+    color: black;
+}
+
+.register-form-group label {
+    font-weight: bold;
+  color: dimgray;
+    font-family: "PT Sans", serif;
+
+}
+
+.register-form-group input {
+  width: 100%;
+  padding: 8px;
+  border: transparent ;
+  border-bottom: 3px solid #3D79A6;
+  border-radius: 4px;
+  background-color: transparent;
+  color: black;
+  font-family: 'Inter', sans-serif;
+font-style: normal;
+margin: 10px;
+font-weight: 500;
+font-size: 18px;
+}
+
+.register_button {
+position: absolute;
+width: 130px;
+height: 40px;
+left: 200px;
+top: 180px;
+
+filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+box-sizing: border-box;
+padding-bottom: 3px;
+
+background: #1A5E8F;
+border: 1px solid #2A286A;
+border-radius: 5px;
+
+font-family: Helvetica;
+font-style: italic;
+font-weight: 700;
+font-size: 15px;
+line-height: 18px;
+
+color: #FFFFFF;
+
+}
+
+.register_button:hover {
+ color: cadetblue;
+}
+
+
+
+
+/*top up page*/
+
+
+.topUp_background {
+position: relative;
+width: 390px;
+height: 844px;
+
+background: linear-gradient(180deg, rgba(216, 235, 232, 0) 50%, #D8EBE8 100%);
+}
+
+.metro_logo\(topUp\){
+background-image: url("/static/Buttons-Logo etc/colored_metrologo.png");
+    position: absolute;
+    width: 225px;
+    height: 70px;
+    left: 550px;
+}
+
+.topUp_prompt {
+font-family: "PT Sans";
+font-style: normal ;
+font-weight: 550;
+font-size: 25px;
+line-height: 16px;
+white-space: nowrap;
+
+position: absolute;
+width: 130px;
+height: 40px;
+left: 500px;
+top: 160px;
+}
+
+.Top-Up-input1 {
+position: absolute;
+width: 30px;
+height: 20px;
+left: 495px;
+top: 195px;
+}
+
+.Top-Up-label1 {
+ font-family: "PT Sans";
+font-style: italic ;
+font-weight: 520;
+font-size: 20px;
+line-height: 16px;
+
+position: absolute;
+width: 130px;
+height: 40px;
+left: 460px;
+top: 197px;
+}
+
+.Top-Up-input2 {
+position: absolute;
+width: 30px;
+height: 20px;
+left: 495px;
+top: 225px;
+}
+
+.Top-Up-label2 {
+ font-family: "PT Sans";
+font-style: italic ;
+font-weight: 520;
+font-size: 20px;
+line-height: 16px;
+
+position: absolute;
+width: 130px;
+height: 40px;
+left: 460px;
+top: 227px;
+}
+
+.Top-Up-input3 {
+position: absolute;
+width: 30px;
+height: 20px;
+left: 495px;
+top: 255px;
+}
+
+.Top-Up-label3 {
+ font-family: "PT Sans";
+font-style: italic ;
+font-weight: 520;
+font-size: 20px;
+line-height: 16px;
+
+position: absolute;
+width: 130px;
+height: 40px;
+left: 460px;
+top: 257px;
+}
+.topUp-add-in {
+font-family: "PT Sans";
+font-style: italic ;
+font-weight: 520;
+font-size: 20px;
+line-height: 16px;
+
+position: absolute;
+width: 390px;
+height: 30px;
+left: 490px;
+top: 300px;
+}
+
+.Payment {
+font-family: "PT Sans";
+font-style: normal ;
+font-weight: 550;
+font-size: 25px;
+line-height: 16px;
+white-space: nowrap;
+
+position: absolute;
+width: 130px;
+height: 40px;
+left: 480px;
+top: 420px;
+}
+
+
+.cc-label {
+font-family: "PT Sans";
+font-style: normal ;
+font-weight: 520;
+font-size: 18px;
+line-height: 16px;
+
+position: absolute;
+width: 130px;
+height: 40px;
+left: 470px;
+top: 480px;
+}
+
+.cc-form-name {
+position: absolute;
+width: 320px;
+height: 40px;
+left: 480px;
+top: 500px;
+}
+
+.TopUp-choices {
+position: absolute;
+width: 320px;
+height: 40px;
+left: -450px;
+top: -20px;
+}
+
+.payment_name {
+position: absolute;
+width: 320px;
+height: 40px;
+left: -450px;
+top: -20px;
+}
+
+.text-body-secondary {
+ position: absolute;
+width: 320px;
+height: 40px;
+left: 10px;
+top: 57px;
+}
+
+.cc-number-label {
+font-family: "PT Sans";
+font-style: normal ;
+font-weight: 520;
+font-size: 18px;
+line-height: 16px;
+
+position: absolute;
+width: 320px;
+height: 40px;
+left: 300px;
+top: 456px;
+}
+
+.cc-form-num {
+position: absolute;
+width: 320px;
+height: 40px;
+left: 460px;
+top: 480px;
+}
+
+.cc-expiration-label {
+font-family: "PT Sans";
+font-style: normal ;
+font-weight: 520;
+font-size: 18px;
+line-height: 16px;
+
+position: absolute;
+width: 320px;
+height: 40px;
+left: -202px;
+top: 590px;
+}
+
+.cc-form-expiration {
+position: absolute;
+width: 100px;
+height: 40px;
+left: 28px;
+top: 610px;
+}
+
+.cc-cv-label {
+font-family: "PT Sans";
+font-style: normal ;
+font-weight: 520;
+font-size: 18px;
+line-height: 16px;
+
+position: absolute;
+width: 320px;
+height: 40px;
+left: -32px;
+top: 590px;
+}
+
+.cc-form-cvv {
+position: absolute;
+width: 100px;
+height: 40px;
+left: 245px;
+top: 610px;
+}
+
+.credit-form-check {
+position: absolute;
+width: 100px;
+height: 100px;
+left: 500px;
+top: 610px;
+}
+
+.credit-card-input {
+position: absolute;
+width: 15px;
+height: 15px;
+left: -30px;
+top: -40px;
+}
+
+.credit-card-label {
+font-family: "PT Sans";
+font-style: normal ;
+font-weight: 520;
+font-size: 18px;
+line-height: 16px;
+white-space: nowrap;
+
+position: absolute;
+width: 15px;
+height: 15px;
+left: 20px;
+top: -40px;
+}
+
+.debit-card-input {
+position: absolute;
+width: 15px;
+height: 15px;
+left: 470px;
+top: 600px;
+}
+
+.debit-card-label {
+font-family: "PT Sans";
+font-style: normal ;
+font-weight: 520;
+font-size: 18px;
+line-height: 16px;
+white-space: nowrap;
+
+position: absolute;
+width: 15px;
+height: 15px;
+left: 520px;
+top: 600px;
+}
+
+.paypal-input {
+position: absolute;
+width: 15px;
+height: 15px;
+left: 470px;
+top: 630px;
+}
+
+.paypal-label {
+font-family: "PT Sans";
+font-style: normal ;
+font-weight: 520;
+font-size: 18px;
+line-height: 16px;
+white-space: nowrap;
+
+position: absolute;
+width: 15px;
+height: 15px;
+left: 520px;
+top: 630px;
+}
+
+.save-info-input {
+position: absolute;
+width: 15px;
+height: 15px;
+left: 470px;
+top: 673px;
+}
+
+.save-info-label {
+font-family: "PT Sans";
+font-style: normal ;
+font-weight: 520;
+font-size: 18px;
+line-height: 16px;
+white-space: nowrap;
+
+position: absolute;
+width: 15px;
+height: 15px;
+left: 520px;
+top: 673px;
+}
+
+.line1 {
+position: absolute;
+width: 800px;
+height: 15px;
+left: 35px;
+top: 355px;
+color: #1A5E8F;
+}
+
+.line2 {
+position: absolute;
+width: 800px;
+height: 15px;
+left: 35px;
+top: 680px;
+color: #1A5E8F;
+}
+
+.topUp_button {
+position: absolute;
+width: 800px;
+height: 40px;
+left: 32px;
+top: 740px;
+
+filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+box-sizing: border-box;
+padding-bottom: 3px;
+
+background: #1A5E8F;
+border: 1px solid #2A286A;
+border-radius: 5px;
+
+font-family: Helvetica;
+font-style: italic;
+font-weight: 700;
+font-size: 17px;
+line-height: 18px;
+
+color: #FFFFFF;
+}
+
+.topUp_button:hover {
+ background-color: cadetblue;
+}
+
+#flash-message {
+    position: absolute;
+   width: 800px;
+height: 60px;
+left: 650px;
+top: 420px;
+    transform: translate(-50%, -50%);
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.fade-out {
+  animation: fadeOut 6s forwards;
+}
