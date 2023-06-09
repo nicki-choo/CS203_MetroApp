@@ -8,7 +8,7 @@
 
 {% block body %}
 <div id="clock"></div>
-<div class="container col-6 position-absolute top-50 start-50 translate-middle">
+<div class="container col-6 col-md-10 col-sm-12 position-absolute top-50 start-50 translate-middle">
     <div  class="col-8 align-center" style="padding: 50px; background-color: #f8f9fa;">
         <form action="" class="needs-validation" novalidate><!--Put in the form location here-->
             <div class="mb-2 row">
@@ -37,9 +37,9 @@
     {% with messages = get_flashed_messages() %}
         {% if messages %}
         <div id="flash-message" class="alert alert-success fade-out">
-         Registration successful! Please check your email for verification
+            Registration successful! Please check your email for verification
         </div>
-         {% endif %}
+        {% endif %}
     {% endwith %}
 
 </div>
