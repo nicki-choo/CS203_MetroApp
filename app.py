@@ -88,7 +88,6 @@ def login():
 
 
 
-
 @app.route('/fares')
 def fares():
     return render_template('fares.html')
