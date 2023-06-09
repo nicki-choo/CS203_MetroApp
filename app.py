@@ -28,6 +28,7 @@ def main():  # put application's code here
 def top_up():
     return render_template('topUpCard.html')
 
+
 @app.route('/view_data', methods=['GET'])
 def view_data():
     conn = sqlite3.connect('users.sqlite')
@@ -37,7 +38,6 @@ def view_data():
     users = cursor.fetchall()
 
     return users
-
 
 
 @app.route('/register', methods=['POST'])
@@ -68,6 +68,7 @@ def register_user():
     # Redirect to the login page
     return redirect(url_for('login'))
 
+
 def send_verification_email(email):
     msg = Message("Welcome to MetroBus",
                   sender='nickidummyacc@gmail.com',
@@ -86,11 +87,10 @@ def login():
     return render_template('login.html')
 
 
-
-
 @app.route('/fares')
 def fares():
     return render_template('fares.html')
+
 
 @app.route('/#')
 def errPage():
