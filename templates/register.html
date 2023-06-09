@@ -1,0 +1,46 @@
+{%  extends 'base.html' %}
+
+
+    <title>Registration</title>
+
+
+
+{% block body %}
+    <div class="metro_logo(register)"></div>
+
+    <h1 class="create_acc_title">Create Account</h1>
+
+    <form action = "https://metrobus-app.onrender.com/register" method = "POST">
+        <div class="register-form-group">
+            <label for="register-username">Username:</label>
+            <input type="text" id="register-username" name="username" required>
+        </div>
+
+        <div class="register-form-group">
+            <label for="register-email">Email Address:</label>
+            <input type="email" id="register-email" name="email" required>
+        </div>
+
+
+        <div class="register-form-group">
+            <label for="register-confirm-email">Confirm Email Address:</label>
+            <input type="email" id="register-confirm-email" name="confirm_email" required>
+        </div>
+
+        <div class="register-form-group">
+            <label for="register-password">Password:</label>
+            <input type="password" id="register-password" name="password" required>
+        </div>
+
+        <div class="register-form-group">
+            <label for="register-confirm-password">Confirm Password:</label>
+            <input type="password" id="register-confirm-password" name="confirm_password" required>
+        </div>
+
+
+        <a href="https://metrobus-app.onrender.com/login">
+        <button class="register_button" type="submit">Register</button>
+        </a>
+
+    </form>
+{% endblock %}
