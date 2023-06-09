@@ -29,7 +29,7 @@ font-weight: 500;
 font-size: 20px;
 line-height: 24px;
 
-color: #FFFFFF;
+color: black;
 
 }
 
@@ -137,7 +137,7 @@ background-color: cadetblue;
 
     color: white;
 }
-*/
+
 /*register*/
 
 
@@ -170,7 +170,7 @@ font-size: 30px;
 line-height: 16px;
 white-space: nowrap;
 
-*/
+
 /* identical to box height */
 
 
@@ -237,7 +237,7 @@ color: #FFFFFF;
 }
 
 
-*/
+
 
 /*top up page*/
 
@@ -624,4 +624,26 @@ color: #FFFFFF;
 
 .topUp_button:hover {
  background-color: cadetblue;
+}
+
+#flash-message {
+    position: absolute;
+   width: 800px;
+height: 60px;
+left: 650px;
+top: 420px;
+    transform: translate(-50%, -50%);
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.fade-out {
+  animation: fadeOut 6s forwards;
 }
