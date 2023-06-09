@@ -35,7 +35,7 @@ color: black;
 
 
 .metro_logo{
-    background-image: url("/static/Buttons-Logo etc/MetroBus_Logo.png");
+    background-image: url("/static/logos/MetroBus_Logo.png");
     position: absolute;
     width: 405px;
     height: 123px;
@@ -150,7 +150,7 @@ background: linear-gradient(180deg, rgba(216, 235, 232, 0) 50%, #D8EBE8 100%);
 }
 
 .metro_logo\(register\){
-background-image: url("/static/Buttons-Logo etc/colored_metrologo.png");
+background-image: url("/static/logos/colored_metrologo.png");
     position: absolute;
     width: 225px;
     height: 70px;
@@ -251,7 +251,7 @@ background: linear-gradient(180deg, rgba(216, 235, 232, 0) 50%, #D8EBE8 100%);
 }
 
 .metro_logo\(topUp\){
-background-image: url("/static/Buttons-Logo etc/colored_metrologo.png");
+background-image: url("/static/logos/colored_metrologo.png");
     position: absolute;
     width: 225px;
     height: 70px;
