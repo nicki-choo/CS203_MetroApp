@@ -4,7 +4,7 @@ import sqlite3
 app = Flask(__name__)
 
 
-@app.route('/user_info', methods=['GET'])
+@app.route('/register', methods=['GET'])
 def main():  # put application's code here
     return render_template('register.html')
 
@@ -50,6 +50,10 @@ def login():
 @app.route('/fares')
 def fares():
     return render_template('fares.html')
+
+@app.route('/#')
+def errPage():
+    return render_template('err.html')
 
 
 if __name__ == '__main__':
