@@ -572,14 +572,7 @@ color: #FFFFFF;
  background-color: cadetblue;
 }
 
-#flash-message {
-    position: absolute;
-   width: 800px;
-height: 60px;
-left: 650px;
-top: 420px;
-    transform: translate(-50%, -50%);
-}
+
 
 @keyframes fadeOut {
   from {
