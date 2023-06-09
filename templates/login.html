@@ -8,17 +8,33 @@
 
 {% block body %}
 <div id="clock"></div>
-<div class="container-sm col-6 position-absolute top-50 start-50 translate-middle">
-    <div class="mb-3 row">
-        <label for="staticUserName" class="col-sm-2 col-form-label">Email</label>
-        <input type="text" class="form-control" id="staticUserName">
+<div class="container col-6 position-absolute top-50 start-50 translate-middle">
+    <div  class="col-8 align-center" style="padding: 50px; background-color: #f8f9fa;">
+        <form action="" class="needs-validation" novalidate><!--Put in the form location here-->
+            <div class="mb-2 row">
+                <label for="staticUserName" class="col-sm-2 col-form-label">Email</label>
+                <input type="text" class="form-control" id="staticUserName">
+                <div class="invalid-feedback">
+                    <p><b>Field is empty!</b></p>
+                </div>
+            </div>
+            <div class="mb-2 row">
+                <label for="inputPassword" class="form-label">Password</label>
+                <input type="password" class="form-control" id="inputPassword">
+                <div class="invalid-feedback">
+                    <p><b>Field is empty!</b></p>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary position-relative translate-middle-x start-50"
+                    style="margin-top: 20px;">Login</button>
+        </form>
+        <a href="http://127.0.0.1:5000/register" style="margin-top: 50px;">
+            <h5 style="margin-top: 25px; text-align: center;" class="position-relative translate-middle-x start-50">
+                Create an account</h5>
+        </a>
     </div>
-    <div class="mb-3 row">
-        <label for="inputPassword" class="form-label">Password</label>
-        <input type="password" class="form-control" id="inputPassword">
-    </div>
-    <button type="submit" class="btn btn-primary position-relative translate-middle-x start-50">Submit</button>
 </div>
+{% endblock %}
 
 {% with messages = get_flashed_messages() %}
   {% if messages %}
@@ -27,31 +43,4 @@
     </div>
   {% endif %}
 {% endwith %}
-
-<!--<div class="container">-->
-<!--    <div class="clock"></div>-->
-<!--    <form>-->
-<!--    <div class="form-group">-->
-<!--        <label for="username">Username:</label>-->
-<!--        <input type="text" id="username" name="username">-->
-<!--    </div>-->
-<!--    <div class="form-group">-->
-<!--        <label for="password">Password:</label>-->
-<!--        <input type="password" id="password" name="password">-->
-<!--    </div>-->
-
-
-<!--    <button type="submit" class="login_button">LOG IN</button>-->
-<!--        <a href="https://metrobus-app.onrender.com/user_info"><h2 class="register_card">Create an account</h2> </a>-->
-
-<!--    </form>-->
-
-<!--</div>-->
-{% endblock %}
-
-
-</body>
-
-
-</html>
 
