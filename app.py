@@ -1,5 +1,6 @@
 from flask import Flask, request, render_template, redirect, flash, url_for
 from flask_mail import Mail, Message
+from flask_sqlalchemy import SQLAlchemy
 import sqlite3
 import os
 from dotenv import load_dotenv
@@ -7,16 +8,31 @@ from dotenv import load_dotenv
 app = Flask(__name__)
 app.secret_key = 'your-secret-key'
 mail = Mail(app)
-
 load_dotenv()
 
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USERNAME'] = 'nickidummyacc@gmail.com'
 app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
 app.config['MAIL_USE_SSL'] = True
 app.config['MAIL_USE_TLS'] = False
-mail = Mail(app)
+
+db = SQLAlchemy(app)
+
+
+class User(db.Model):
+    __tablename__ = 'user'
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(20), nullable=False)
+    password = db.Column(db.String(20), nullable=False)
+    email = db.Column(db.String(30), nullable=False)
+
+    def __init__(self, username, password, email):
+        self.username = username
+        self.password = password
+        self.email = email
 
 
 @app.route('/register', methods=['GET'])
