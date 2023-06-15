@@ -53,7 +53,18 @@ class Payment(db.Model):
 
 @app.route('/register', methods=['GET'])
 def main():  # put application's code here
-    return render_template('register.html')
+    users = User.query.all()
+    output = []
+
+    for user in users:
+        user_data = {
+            'username': user.username,
+            'email': user.email,
+            'password': user.password
+        }
+        output.append(user_data)
+
+    return render_template('register.html', users=output)
 
 
 @app.route('/top_up', methods=['GET'])
