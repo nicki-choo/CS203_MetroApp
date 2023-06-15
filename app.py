@@ -52,7 +52,7 @@ class Payment(db.Model):
         self.user_id = user_id
 
 @app.route('/register', methods=['GET'])
-def main():  # put application's code here
+def register():  # put application's code here
     users = User.query.all()
     output = []
 
@@ -72,13 +72,13 @@ def top_up():
     return render_template('topUpCard.html')
 
 
-
-
-
 @app.route('/register', methods=['POST'])
 def register_user():
     userdata = request.get_json()
-    new_user = User(username=userdata['username'], password=userdata['password'], email=userdata['email'])
+
+    new_user = User(username=userdata['username'],
+                    password=userdata['password'],
+                    email=userdata['email'])
     db.session.add(new_user)
     db.session.commit()
 
