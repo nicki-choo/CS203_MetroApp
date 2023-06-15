@@ -90,7 +90,7 @@ def register_user():
     flash('Registration successful! Please check your email for verification.')
 
     # Redirect to the login page
-    return redirect(url_for('login'))
+    return redirect(url_for('login')), 201
 
 
 def send_verification_email(email):
