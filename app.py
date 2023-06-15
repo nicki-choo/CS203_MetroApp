@@ -25,13 +25,15 @@ class User(db.Model):
     __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), nullable=False)
-    password = db.Column(db.String(20), nullable=False)
     email = db.Column(db.String(30), nullable=False)
+    password = db.Column(db.String(20), nullable=False)
 
-    def __init__(self, username, password, email):
+
+    def __init__(self, username,email, password):
         self.username = username
-        self.password = password
         self.email = email
+        self.password = password
+
 
 class Payment(db.Model):
     __tablename__ = 'payment'
@@ -77,11 +79,11 @@ def register_user():
     userdata = request.get_json()
 
     new_user = User(username=userdata['username'],
-                    password=userdata['password'],
-                    email=userdata['email'])
+                    email=userdata['email'],
+                    password=userdata['password'])
+
     db.session.add(new_user)
     db.session.commit()
-
 
     # Send verification email
     send_verification_email(userdata['email'])
@@ -90,7 +92,7 @@ def register_user():
     flash('Registration successful! Please check your email for verification.')
 
     # Redirect to the login page
-    return redirect(url_for('login')), 201
+    return redirect(url_for('login'))
 
 
 def send_verification_email(email):
