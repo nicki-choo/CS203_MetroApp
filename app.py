@@ -28,8 +28,7 @@ class User(db.Model):
     email = db.Column(db.String(30), nullable=False)
     password = db.Column(db.String(20), nullable=False)
 
-
-    def __init__(self, username,email, password):
+    def __init__(self, username, email, password):
         self.username = username
         self.email = email
         self.password = password
@@ -78,9 +77,11 @@ def top_up():
 def register_user():
     userdata = request.get_json()
 
-    new_user = User(username=userdata['username'],
-                    email=userdata['email'],
-                    password=userdata['password'])
+    new_user = User(
+        username=userdata['username'],
+        email=userdata['email'],
+        password=userdata['password']
+    )
 
     db.session.add(new_user)
     db.session.commit()
