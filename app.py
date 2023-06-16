@@ -75,7 +75,7 @@ def top_up():
 
 @app.route('/register', methods=['POST'])
 def register_user():
-    userdata = request.get_json()
+    userdata = request.form
 
     new_user = User(
         username=userdata['username'],
