@@ -3,25 +3,25 @@
 <title>Registration</title>
 {% endblock %}
 {% block body %}
-<div class="mt-5 col-xl-8 col-xs-12 col-md-10 position-relative translate-middle-x start-50"
-style="background-color: #f9f9f9; padding: 50px;">
+<form action="https://metrobus-app.onrender.com/register" method="POST">
+    <div class="mt-5 col-xl-8 col-xs-12 col-md-10 position-relative translate-middle-x start-50"
+    style="background-color: #f9f9f9; padding: 50px;">
     <h1>Create A Metro Account</h1>
-    <form action="https://metrobus-app.onrender.com/register" method = "POST">
         <div class="mb-4 mt-5 row">
             <label class="form-label" for="register-username">Username:</label>
-            <input class="form-control" type="text" id="register-username" required>
+            <input class="form-control" type="text" id="register-username" name="username" required>
         </div>
         <div class="mb-4 row">
             <label class="form-label" for="register-email">Email Address:</label>
-            <input class="form-control" type="email" id="register-email" required>
+            <input class="form-control" type="email" id="register-email" name="email" required>
         </div>
         <div class="mb-4 row">
             <label class="form-label" for="register-confirm-email">Confirm Email Address:</label>
-            <input class="form-control" type="email" id="register-confirm-email" required>
+            <input class="form-control" type="email" id="register-confirm-email" name="register-confirm-email" required>
         </div>
         <div class="mb-4 row">
             <label class="form-label" for="register-password">Password:</label>
-            <input class="form-control" type="password" id="register-password" required>
+            <input class="form-control" type="password" id="register-password" name="password" required>
         </div>
         <div class="mb-4 row">
             <label class="form-label" for="register-confirm-password">Confirm Password:</label>
@@ -30,6 +30,9 @@ style="background-color: #f9f9f9; padding: 50px;">
         <a class="mt-5" href="https://metrobus-app.onrender.com/login">
             <button class="btn btn-primary" type="submit">Register</button>
         </a>
-    </form>
-</div>
+    </div>
+</form>
 {% endblock %}
+has context menu
+
+
