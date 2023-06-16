@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect, flash, url_for, jsonify
+from flask import Flask, request, render_template, redirect, flash, url_for
 from flask_mail import Mail, Message
 from flask_sqlalchemy import SQLAlchemy
 import os
@@ -90,7 +90,7 @@ def register_user():
     send_verification_email(userdata['email'])
 
     # Show flash message after successful registration
-    jsonify('Registration successful! Please check your email for verification.')
+    flash('Registration successful! Please check your email for verification.')
 
     # Redirect to the login page
     return redirect(url_for('login'))
