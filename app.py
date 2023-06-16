@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect, flash, url_for
+from flask import Flask, request, render_template, redirect, flash, url_for, jsonify
 from flask_mail import Mail, Message
 from flask_sqlalchemy import SQLAlchemy
 import os
@@ -52,6 +52,25 @@ class Payment(db.Model):
         self.cc_cvc = cc_cvc
         self.user_id = user_id
 
+def validate_user_info(data):
+    if 5 < len(data['username']) < 20:
+        if '@' in data['email']:
+            if len(data['password']) > 8:
+                return jsonify({"Message": "User Added to Database"}), 201
+            return jsonify({"Message": "Password Too Short"}), 400
+        return jsonify({"Message": "Email Not Valid"}), 400
+    return jsonify({"Message": "Username Needs to be between 5 - 20 characters"}), 400
+
+def existing_usernames():
+    db_users = User.query.all()
+    usernames = []
+
+    for user in db_users:
+        usernames.append(user.username)
+
+    return usernames
+
+
 @app.route('/register', methods=['GET'])
 def register():  # put application's code here
     users = User.query.all()
@@ -77,11 +96,19 @@ def top_up():
 def register_user():
     userdata = request.form
 
+    if 'username' not in userdata or 'password' not in userdata or 'email' not in userdata:
+        return jsonify({"message": "Necessary Info is missing"}), 400
+
+    validate_user_info(userdata)
+
     new_user = User(
         username=userdata['username'],
         email=userdata['email'],
         password=userdata['password']
     )
+
+    if userdata['username'] in existing_usernames():
+        return jsonify({'error': 'Username is already in use'}), 400
 
     db.session.add(new_user)
     db.session.commit()
@@ -117,11 +144,6 @@ def login():
 @app.route('/fares')
 def fares():
     return render_template('fares.html')
-
-
-@app.route('/#')
-def errPage():
-    return render_template('err.html')
 
 
 if __name__ == '__main__':

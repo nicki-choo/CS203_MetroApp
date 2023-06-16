@@ -32,7 +32,18 @@
         </a>
     </div>
 </form>
+<script type="text/javascript">
+    function check() {
+        var input = document.getElementById('register-password-confirm');
+        if (input.value != document.getElementById('register-password').value {
+            input.setCustomValidity('Passwords Must Be Matching');
+        } else {
+            // Here the inputs match, so reset the error message
+            input.setCustomValidity('');
+        }
+    }
+</script>
 {% endblock %}
-has context menu
+<!--has context menu-->
 
 
