@@ -21,28 +21,17 @@
         </div>
         <div class="mb-4 row">
             <label class="form-label" for="register-password">Password:</label>
-            <input class="form-control" type="password" id="register-password" name="password" required>
+            <input class="form-control" oninput="checkPasswordsMatch()" type="password" id="register-password" name="password" required>
         </div>
         <div class="mb-4 row">
             <label class="form-label" for="register-confirm-password">Confirm Password:</label>
-            <input class="form-control" type="password" id="register-confirm-password" name="confirm_password" required>
+            <input class="form-control" type="password" oninput="checkPasswordsMatch()" id="register-confirm-password" name="confirm_password" required>
         </div>
         <a class="mt-5" href="https://metrobus-app.onrender.com/login">
             <button class="btn btn-primary" type="submit">Register</button>
         </a>
     </div>
 </form>
-<script type="text/javascript">
-    function check() {
-        var input = document.getElementById('register-password-confirm');
-        if (input.value != document.getElementById('register-password').value {
-            input.setCustomValidity('Passwords Must Be Matching');
-        } else {
-            // Here the inputs match, so reset the error message
-            input.setCustomValidity('');
-        }
-    }
-</script>
 {% endblock %}
 <!--has context menu-->
 
