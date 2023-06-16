@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 
 app = Flask(__name__)
 app.secret_key = 'your-secret-key'
-mail = Mail(app)
+
 load_dotenv()
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
@@ -17,6 +17,7 @@ app.config['MAIL_USERNAME'] = 'nickidummyacc@gmail.com'
 app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
 app.config['MAIL_USE_SSL'] = True
 app.config['MAIL_USE_TLS'] = False
+mail = Mail(app)
 
 db = SQLAlchemy(app)
 
