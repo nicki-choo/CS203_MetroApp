@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template, redirect, flash, url_for, jsonify
 from flask_mail import Mail, Message
-from flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy, session
 import os
 from dotenv import load_dotenv
 
@@ -51,6 +51,7 @@ class Payment(db.Model):
         self.cc_exp = cc_exp
         self.cc_cvc = cc_cvc
         self.user_id = user_id
+    
 
 def validate_user_info(data):
     if 5 < len(data['username']) < 20:
@@ -60,6 +61,7 @@ def validate_user_info(data):
             return jsonify({"Message": "Password Too Short"}), 400
         return jsonify({"Message": "Email Not Valid"}), 400
     return jsonify({"Message": "Username Needs to be between 5 - 20 characters"}), 400
+
 
 def existing_usernames():
     db_users = User.query.all()
@@ -136,9 +138,26 @@ def home():
     return render_template('index.html')
 
 
-@app.route('/login', methods=['GET'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-    return render_template('login.html')
+    if request.method == 'POST':
+        login_data = request.form
+        username_data = db.execute("SELECT username FROM users WHERE username=:username", {"username":login_data['username']}).fetchone()
+        password_data = db.execute("SELECT password FROM users WHERE username=:username", {"username":login_data['username']}).fetchone()
+        
+        if username_data is None:
+            flash("User does not exist!", "danger")
+            return redirect('/login')
+        else:
+            if login_data['password'] != password_data:
+                flash("Login information is incorrect", "warning")
+                return redirect('/login')
+            else:
+                flash("Login Success!", "success")
+                return redirect('/')
+        
+    else:
+        return render_template('login.html')
 
 
 @app.route('/fares')
