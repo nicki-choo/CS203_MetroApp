@@ -3,11 +3,24 @@ from flask_mail import Mail, Message
 from flask_sqlalchemy import SQLAlchemy, session
 import os
 from dotenv import load_dotenv
+from error import ERROR_EMAIL, ERROR_PASS, ERROR_USERNAME, ERROR_NAME_TAKEN, ERROR_MISSING_INFO
+from flask_swagger_ui import get_swaggerui_blueprint
 
 app = Flask(__name__)
 app.secret_key = 'your-secret-key'
 mail = Mail(app)
 load_dotenv()
+
+SWAGGER_URL = '/api/docs'
+API_URL = '/static/swagger.json'
+
+swagger_blueprint = get_swaggerui_blueprint(
+    SWAGGER_URL,
+    API_URL,
+    config={
+        'app_name': "Metro App Revamp"
+    }
+)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -57,10 +70,10 @@ def validate_user_info(data):
     if 5 < len(data['username']) < 20:
         if '@' in data['email']:
             if len(data['password']) > 8:
-                return jsonify({"Message": "User Added to Database"}), 201
-            return jsonify({"Message": "Password Too Short"}), 400
-        return jsonify({"Message": "Email Not Valid"}), 400
-    return jsonify({"Message": "Username Needs to be between 5 - 20 characters"}), 400
+                return True
+            return ERROR_PASS
+        return ERROR_EMAIL
+    return ERROR_USERNAME
 
 
 def existing_usernames():
@@ -75,17 +88,6 @@ def existing_usernames():
 
 @app.route('/register', methods=['GET'])
 def register():  # put application's code here
-    users = User.query.all()
-    output = []
-
-    for user in users:
-        user_data = {
-            'username': user.username,
-            'email': user.email,
-            'password': user.password
-        }
-        output.append(user_data)
-
     return render_template('register.html', users=output)
 
 
@@ -99,30 +101,32 @@ def register_user():
     userdata = request.form
 
     if 'username' not in userdata or 'password' not in userdata or 'email' not in userdata:
-        return jsonify({"message": "Necessary Info is missing"}), 400
-
-    validate_user_info(userdata)
-
-    new_user = User(
-        username=userdata['username'],
-        email=userdata['email'],
-        password=userdata['password']
-    )
-
+        return ERROR_MISSING_INFO
+    
     if userdata['username'] in existing_usernames():
-        return jsonify({'error': 'Username is already in use'}), 400
+        return ERROR_NAME_TAKEN
 
-    db.session.add(new_user)
-    db.session.commit()
+    if validate_user_info(userdata):
 
-    # Send verification email
-    send_verification_email(userdata['email'])
+        new_user = User(
+            username=userdata['username'],
+            email=userdata['email'],
+            password=userdata['password']
+        )
 
-    # Show flash message after successful registration
-    flash('Registration successful! Please check your email for verification.')
+        db.session.add(new_user)
+        db.session.commit()
 
-    # Redirect to the login page
-    return redirect(url_for('login'))
+        # Send verification email
+        send_verification_email(userdata['email'])
+
+        # Show flash message after successful registration
+
+        # Redirect to the login page
+        return redirect('/login')
+    
+    else:
+        return validate_user_info(userdata), 400
 
 
 def send_verification_email(email):
@@ -163,6 +167,9 @@ def login():
 @app.route('/fares')
 def fares():
     return render_template('fares.html')
+
+
+app.register_blueprint(swagger_blueprint)
 
 
 if __name__ == '__main__':
