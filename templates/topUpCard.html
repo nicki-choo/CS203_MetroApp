@@ -1,134 +1,97 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
-
-
+{% extends 'base.html' %}
+{% block head %}
 <title>Top Up Credit</title>
-
-<form action="https://metrobus-app.onrender.com/top_up" method="POST">
-<div class="metro_logo(topUp)"></div>
-
-<body class="topUp_background">
-
-
-<container class="TopUp-choices">
-<div class="Top-Up-form-check">
-  <h4 class="topUp_prompt">How much would you like to top up?</h4>
-  <input class="Top-Up-input1" type="checkbox" value="" id="flexCheck10">
-  <label class="Top-Up-label1" for="flexCheck10">
-    $10.00
-  </label>
-
-  <input class="Top-Up-input2" type="checkbox" value="" id="flexCheck30">
-  <label class="Top-Up-label2" for="flexCheck30">
-    $30.00
-  </label>
-
-   <input class="Top-Up-input3" type="checkbox" value="" id="flexCheck50">
-  <label class="Top-Up-label3" for="flexCheck50">
-    $50.00
-  </label>
-
-  <div class="input-group topUp-add-in">
-  <span class="input-group-text">$</span>
-  <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
-  <span class="input-group-text">.00</span>
-  </div>
-</div>
-</container>
-
-
-<container class="payment_name">
-<div class="row gy-3">
-    <h1 class="Payment">Payment</h1>
-    <div class="col-md-9">
-    <label for="cc-name" class="cc-label">Name on card</label>
-
-    <div class="cc-form-name">
-    <input type="text" class="form-control" id="cc-name" placeholder="" required>
-    <small class="text-body-secondary">Full name as displayed on card</small>
-    </div>
-
-        <div class="invalid-feedback">
-         Name on card is required
+{% endblock %}
+{% block body %}
+<div class="col-lg-8 col-sm-12 position-relative translate-middle-x start-50"
+    style="margin-top: 50px ; padding: 50px; background-color: #f9f9f9;">
+    <div class="col-6 col-sm-12">
+        <h4>How much would you like to top up?</h4>
+        <div class="form-check mt-4 mb-2">
+            <input class="form-check-input" name="flexRadioDefault" type="radio" id="tenTopUp">
+            <label class="form-check-label" for="tenTopUp">
+                $10.00
+            </label>
         </div>
-</div>
+        <div class="form-check mb-2">
+            <input class="form-check-input" name="flexRadioDefault" type="radio" id="twentyTopUp">
+            <label class="form-check-label" for="twentyTopUp">
+                $20.00
+            </label>
+        </div>
+        <div class="form-check mb-2">
+            <input class="form-check-input" name="flexRadioDefault" type="radio" id="fiftyTopUp">
+            <label class="form-check-label" for="fiftyTopUp">
+                $50.00
+            </label>
+        </div>
+        <div class="form-check mt-4">
+            <input class="form-check-input" name="flexRadioDefault" type="radio" id="custTopUp">
+            <label class="form-check-label" for="custTopUp">
+                Custom amount
+            </label>
+            <div class="input-group">
+                <span class="input-group-text">$</span>
+                <input type="text" class="form-control" aria-label="Custom Amount">
+            </div>
+        </div>
     </div>
-</container>
-
-<hr class="my-4 line1">
-
-<div class="col-md-9">
-<label for="cc-number" class="cc-number-label">Credit card number</label>
-
-<div class="cc-form-num" >
-<input type="text" class="form-control" id="cc-number" placeholder="" required>
-</div>
-
-    <div class="invalid-feedback">
-                Credit card number is required
+    <hr class="my-4 line1">
+    <div class="row align-items-center mb-2">
+        <h1 style="margin-top: 20px; margin-bottom: 20px;">Payment</h1>
+        <div class="col-auto">
+            <label for="cc-name" class="form-label">Cardholder's Name</label>
+        </div>
+        <div class="col-auto">
+            <input type="text" class="form-control" id="cc-name" required>
+        </div>
+        <div class="col-auto">
+            <span id="nameHelpInline" class="form-text">
+                Input your full name as displayed on the card
+            </span>
+        </div>
+        <div class="invalid-feedback">
+            Name on card is required
+        </div>
     </div>
-</div>
-
-<div class="col-md-3">
-<label for="cc-expiration" class="cc-expiration-label">Expiration</label>
-
-<div class="cc-form-expiration">
-<input type="text" class="form-control" id="cc-expiration" placeholder="" required>
-</div>
-
-    <div class="invalid-feedback">
-                Expiration date required
+    <div class="row align-items-center mb-3">
+        <div class="col-auto">
+            <label for="cc-number" class="form-label">Credit card number</label>
+        </div>
+        <div class="col-auto">
+            <input type="text" class="form-control" id="cc-number" placeholder="XXXX-XXXX-XXXX-XXXX" required>
+        </div>
+        <div class="invalid-feedback">
+            Credit card number is required
+        </div>
     </div>
-</div>
-
-<div class="col-md-3">
-<label for="cc-cvv" class="cc-cv-label">CVV</label>
-
-<div class="cc-form-cvv">
-<input type="text" class="form-control" id="cc-cvv" placeholder="" required>
-</div>
-    <div class="invalid-feedback">
-                Security code required
+    <div class="row mt-3 mb-3 align-items-center">
+        <div class="col-auto">
+            <label for="cc-expiration" class="form-label">Expiration Date</label>
+            <input id="cc-expiration" type="text" class="form-control" placeholder="MM/YY" required>
+        </div>
+        <div class="invalid-feedback">
+            Expiration date required
+        </div>
+        <div class="col-auto">
+            <label for="cc-CCV" class="form-label">CCV no.</label>
+            <input id="cc-CCV" type="text" class="form-control" placeholder="XXX" required>
+        </div>
+        <div class="invalid-feedback">
+            Security code required
+        </div>
     </div>
+    <div class="row mt-3 mb-3">
+        <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="save-info">
+            <label class="form-label" for="save-info">Save card for next time</label>
+        </div>
+        <a href="#" class="link-disabled">
+            <img class="float-end img-thumbnail" src="static/logos/paypal.png" alt="PayPal Logo"
+            style="max-width: 150px;">
+        </a>
+    </div>
+    <hr class="my-4 line2">
+    <button type="submit" class="topUp_button">Top Up</button>
 </div>
-
-<div class="my-3">
-     <div class="credit-form-check">
-        <input id="credit" name="paymentMethod" type="radio" class="credit-card-input" checked required>
-              <label class="credit-card-label" for="credit">Credit card</label>
-     </div>
-
-     <div class="debit-form-check">
-        <input id="debit" name="paymentMethod" type="radio" class="debit-card-input" required>
-        <label class="debit-card-label" for="debit">Debit card</label>
-     </div>
-
-     <div class="paypal-form-check">
-       <input id="paypal" name="paymentMethod" type="radio" class="paypal-input" checked required>
-       <label class="paypal-label" for="paypal">PayPal</label>
-     </div>
-</div>
-
-<div class="save-cc-form-check">
-    <input type="checkbox" class="save-info-input" id="save-info">
-    <label class="save-info-label" for="save-info">Save this information for next time</label>
-</div>
-
-<hr class="my-4 line2">
-
-
-<button type="submit" class="topUp_button">Top Up</button>
-
-
-
-
- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
-</body>
-</form>
-</html>
+{% endblock %}
