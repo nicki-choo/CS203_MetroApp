@@ -115,9 +115,9 @@ def login():
     return render_template('login.html')
 
 
-@app.route('/fares')
-def fares():
-    return render_template('fares.html')
+@app.route('/bus_fares', methods=['GET'])
+def bus_fares():
+    return render_template('busfares.html')
 
 
 @app.route('/#')

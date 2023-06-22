@@ -4,14 +4,17 @@ html {
 
 body {
 background-image: linear-gradient(white, lightblue);
+background-size: 300% 300vh;
+background-repeat: no-repeat;
 }
 
 
 
-footer {
-    display: block;
-    float: bottom;
-    text-align: right;
+.footer-main {
+      position: relative;
+      text-align: right;
+      padding: 10px;
+      width: 100%;
 }
 
 
@@ -502,4 +505,8 @@ color: #FFFFFF;
 
 .fade-out {
   animation: fadeOut 6s forwards;
+}
+
+.column_color {
+    color: #1A5E8F;
 }
