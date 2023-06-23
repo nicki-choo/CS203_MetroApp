@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy, session
 import os
 from dotenv import load_dotenv
 from error import ERROR_EMAIL, ERROR_PASS, ERROR_USERNAME, ERROR_NAME_TAKEN, ERROR_MISSING_INFO
-from flask_swagger_ui import get_swaggerui_blueprint
+
 
 app = Flask(__name__)
 app.secret_key = 'your-secret-key'
@@ -12,13 +12,6 @@ mail = Mail(app)
 load_dotenv()
 
 
-swagger_blueprint = get_swaggerui_blueprint(
-    SWAGGER_URL,
-    API_URL,
-    config={
-        'app_name': "Metro App Revamp"
-    }
-)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
