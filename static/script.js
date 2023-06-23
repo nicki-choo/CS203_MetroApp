@@ -17,7 +17,7 @@ document.getElementById("loginButton").addEventListener("click", handleLogin);
 
 function checkPasswordsMatch() {
     var input = document.getElementById('register-password-confirm');
-    if (input.value != document.getElementById('register-password').value {
+    if (input.value != document.getElementById('register-password').value) {
         input.setCustomValidity('Passwords Must Be Matching');
     } else {
         // Here the inputs match, so reset the error message

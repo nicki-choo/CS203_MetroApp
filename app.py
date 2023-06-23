@@ -71,9 +71,9 @@ def validate_user_info(data):
         if '@' in data['email']:
             if len(data['password']) > 8:
                 return True
-            return ERROR_PASS
-        return ERROR_EMAIL
-    return ERROR_USERNAME
+            return ERROR_PASS.to_dict()
+        return ERROR_EMAIL.to_dict()
+    return ERROR_USERNAME.to_dict()
 
 
 def existing_usernames():
@@ -88,7 +88,7 @@ def existing_usernames():
 
 @app.route('/register', methods=['GET'])
 def register():  # put application's code here
-    return render_template('register.html', users=output)
+    return render_template('register.html')
 
 
 @app.route('/top_up', methods=['GET'])
@@ -101,32 +101,29 @@ def register_user():
     userdata = request.form
 
     if 'username' not in userdata or 'password' not in userdata or 'email' not in userdata:
-        return ERROR_MISSING_INFO
-    
+        return ERROR_MISSING_INFO.to_dict(), ERROR_MISSING_INFO.to_dict()['err_id']
+
+    validation_result = validate_user_info(userdata)
+    if validation_result != True:
+        return validation_result, validation_result['err_id']
+
     if userdata['username'] in existing_usernames():
-        return ERROR_NAME_TAKEN
+        return ERROR_NAME_TAKEN.to_dict(), ERROR_NAME_TAKEN.to_dict()['err_id']
+ 
+    new_user = User(
+        username=userdata['username'],
+        email=userdata['email'],
+        password=userdata['password']
+    )
+ 
+    db.session.add(new_user)
+    db.session.commit()
+ 
+    # Send verification email
+    send_verification_email(userdata['email'])
 
-    if validate_user_info(userdata):
-
-        new_user = User(
-            username=userdata['username'],
-            email=userdata['email'],
-            password=userdata['password']
-        )
-
-        db.session.add(new_user)
-        db.session.commit()
-
-        # Send verification email
-        send_verification_email(userdata['email'])
-
-        # Show flash message after successful registration
-
-        # Redirect to the login page
-        return redirect('/login')
-    
-    else:
-        return validate_user_info(userdata), 400
+    # Redirect to the login page
+    return redirect("login", code=201)
 
 
 def send_verification_email(email):
