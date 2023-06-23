@@ -55,8 +55,9 @@ class Payment(db.Model):
     cc_number = db.Column(db.String(100), nullable=False)
     cc_exp = db.Column(db.String(100), nullable=False)
     cc_cvc = db.Column(db.String(100), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     users = db.relationship('User', backref='payment')
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
 
     def __init__(self, tp_amount, cc_name, cc_number, cc_exp, cc_cvc, user_id):
         self.tp_amount = tp_amount
@@ -86,14 +87,42 @@ def existing_usernames():
 
     return usernames
 
+def existing_payments():
+    db_payments = Payment.query.all()
+    payments = []
+
+    for payment in db_payments:
+        payments.append(payment.tp_amount)
+
+    return payments
 
 @app.route('/register', methods=['GET'])
 def register():  # put application's code here
-    return render_template('register.html', users=output)
+    users = existing_usernames()
+    return render_template('register.html', users=users)
 
 
 @app.route('/top_up', methods=['GET'])
 def top_up():
+    payments = existing_payments()
+    return render_template('topUpCard.html', payments=payments)
+
+@app.route('/top_up', methods=['POST'])
+def process_top_up():
+    user_payment = request.form
+
+    new_payment = Payment(
+        tp_amount=user_payment['tp_amount'],
+        cc_name=user_payment['cc_name'],
+        cc_number=user_payment['cc_number'],
+        cc_exp=user_payment['cc_exp'],
+        cc_cvc=user_payment['cc_cvc'],
+        user_id=user_payment['user_id']
+    )
+
+    db.session.add(new_payment)
+    db.session.commit()
+
     return render_template('topUpCard.html')
 
 

@@ -441,25 +441,16 @@ top: 673px;
 
 .line1 {
 position: absolute;
-width: 800px;
+width: 570px;
 height: 15px;
-left: 35px;
+left: 30px;
 top: 355px;
-color: #1A5E8F;
-}
-
-.line2 {
-position: absolute;
-width: 800px;
-height: 15px;
-left: 35px;
-top: 680px;
 color: #1A5E8F;
 }
 
 .topUp_button {
 position: absolute;
-width: 800px;
+width: 550px;
 height: 40px;
 left: 32px;
 top: 740px;
