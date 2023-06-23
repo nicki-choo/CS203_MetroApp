@@ -11,8 +11,6 @@ app.secret_key = 'your-secret-key'
 mail = Mail(app)
 load_dotenv()
 
-SWAGGER_URL = '/api/docs'
-API_URL = '/static/swagger.json'
 
 swagger_blueprint = get_swaggerui_blueprint(
     SWAGGER_URL,
@@ -166,7 +164,6 @@ def fares():
     return render_template('busfares.html')
 
 
-app.register_blueprint(swagger_blueprint)
 
 
 if __name__ == '__main__':
