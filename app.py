@@ -161,9 +161,9 @@ def login():
         return render_template('login.html')
 
 
-@app.route('/fares')
+@app.route('/bus_fares')
 def fares():
-    return render_template('fares.html')
+    return render_template('busfares.html')
 
 
 app.register_blueprint(swagger_blueprint)
