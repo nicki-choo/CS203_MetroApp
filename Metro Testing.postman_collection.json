@@ -1,0 +1,273 @@
+{
+	"info": {
+		"_postman_id": "9e59ca8a-0b9b-4678-9f49-d138d8be8414",
+		"name": "Metro Testing",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Registration Username fail",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"username\", \"jonnyjimatthebeachonasunnyday\");\r",
+							"pm.environment.set(\"email\", \"jonny@gmail.com\");\r",
+							"pm.environment.set(\"password\", \"hfsdgfjhb\");"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var responseObj = pm.response.json();\r",
+							"console.log(responseObj);\r",
+							"\r",
+							"pm.test(\"Error code for username fail should return 'MBA-01'\"), function() {\r",
+							"    pm.expect(responseObj.error.err_id).to.equal(\"MBA-01\");\r",
+							"    pm.expect(responseObj.error.err_msg).to.equal(\"Invalid input for username\");\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "{{username}}",
+							"type": "default"
+						},
+						{
+							"key": "email",
+							"value": "{{email}}",
+							"type": "default"
+						},
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:5000/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Registration Email Fail",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"username\", \"jonnyjim\");\r",
+							"pm.environment.set(\"email\", \"jonnygmail.com\");\r",
+							"pm.environment.set(\"password\", \"hfsdgfjhb\");"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var responseObj = pm.response.json();\r",
+							"console.log(responseObj);\r",
+							"\r",
+							"pm.test(\"Error code for email fail should return 'MBA-02'\"), function() {\r",
+							"    pm.expect(responseObj.error.err_id).to.equal(\"MBA-02\");\r",
+							"    pm.expect(responseObj.error.err_msg).to.equal(\"Invalid email address\");\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "{{username}}",
+							"type": "default"
+						},
+						{
+							"key": "email",
+							"value": "{{email}}",
+							"type": "default"
+						},
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:5000/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Registration Password Fail",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"username\", \"jonnyjim\");\r",
+							"pm.environment.set(\"email\", \"jonny@gmail.com\");\r",
+							"pm.environment.set(\"password\", \"hfs\");"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var responseObj = pm.response.json();\r",
+							"console.log(responseObj);\r",
+							"\r",
+							"pm.test(\"Error code for password fail should return 'MBA-03'\"), function() {\r",
+							"    pm.expect(responseObj.error.err_id).to.equal(\"MBA-03\");\r",
+							"    pm.expect(responseObj.error.err_msg).to.equal(\"Password needs to be at least 8 characters\");\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "{{username}}",
+							"type": "default"
+						},
+						{
+							"key": "email",
+							"value": "{{email}}",
+							"type": "default"
+						},
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:5000/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Succussful Registration",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"username\", \"jonnyjim\");\r",
+							"pm.environment.set(\"email\", \"jonny@gmail.com\");\r",
+							"pm.environment.set(\"password\", \"hfkhdfbkahdbkjs\");"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful Registration Must return status '201'\"), function() {\r",
+							"    pm.response.to.have.status(201);\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "{{username}}",
+							"type": "default"
+						},
+						{
+							"key": "email",
+							"value": "{{email}}",
+							"type": "default"
+						},
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:5000/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"register"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

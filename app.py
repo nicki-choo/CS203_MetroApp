@@ -4,14 +4,23 @@ from flask_sqlalchemy import SQLAlchemy, session
 import os
 from dotenv import load_dotenv
 from error import ERROR_EMAIL, ERROR_PASS, ERROR_USERNAME, ERROR_NAME_TAKEN, ERROR_MISSING_INFO
-
+from flask_swagger_ui import get_swaggerui_blueprint
 
 app = Flask(__name__)
 app.secret_key = 'your-secret-key'
-
+mail = Mail(app)
 load_dotenv()
 
+SWAGGER_URL = '/api/docs'
+API_URL = '/static/swagger.json'
 
+swagger_blueprint = get_swaggerui_blueprint(
+    SWAGGER_URL,
+    API_URL,
+    config={
+        'app_name': "Metro App Revamp"
+    }
+)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -21,7 +30,6 @@ app.config['MAIL_USERNAME'] = 'nickidummyacc@gmail.com'
 app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
 app.config['MAIL_USE_SSL'] = True
 app.config['MAIL_USE_TLS'] = False
-mail = Mail(app)
 
 db = SQLAlchemy(app)
 
@@ -46,9 +54,8 @@ class Payment(db.Model):
     cc_number = db.Column(db.String(100), nullable=False)
     cc_exp = db.Column(db.String(100), nullable=False)
     cc_cvc = db.Column(db.String(100), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     users = db.relationship('User', backref='payment')
-
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __init__(self, tp_amount, cc_name, cc_number, cc_exp, cc_cvc, user_id):
         self.tp_amount = tp_amount
@@ -64,9 +71,9 @@ def validate_user_info(data):
         if '@' in data['email']:
             if len(data['password']) > 8:
                 return True
-            return ERROR_PASS
-        return ERROR_EMAIL
-    return ERROR_USERNAME
+            return ERROR_PASS.to_dict()
+        return ERROR_EMAIL.to_dict()
+    return ERROR_USERNAME.to_dict()
 
 
 def existing_usernames():
@@ -78,42 +85,14 @@ def existing_usernames():
 
     return usernames
 
-def existing_payments():
-    db_payments = Payment.query.all()
-    payments = []
-
-    for payment in db_payments:
-        payments.append(payment.tp_amount)
-
-    return payments
 
 @app.route('/register', methods=['GET'])
 def register():  # put application's code here
-    users = existing_usernames()
-    return render_template('register.html', users=users)
+    return render_template('register.html')
 
 
 @app.route('/top_up', methods=['GET'])
 def top_up():
-    payments = existing_payments()
-    return render_template('topUpCard.html', payments=payments)
-
-@app.route('/top_up', methods=['POST'])
-def process_top_up():
-    user_payment = request.form
-
-    new_payment = Payment(
-        tp_amount=user_payment['tp_amount'],
-        cc_name=user_payment['cc_name'],
-        cc_number=user_payment['cc_number'],
-        cc_exp=user_payment['cc_exp'],
-        cc_cvc=user_payment['cc_cvc'],
-        user_id=user_payment['user_id']
-    )
-
-    db.session.add(new_payment)
-    db.session.commit()
-
     return render_template('topUpCard.html')
 
 
@@ -122,32 +101,29 @@ def register_user():
     userdata = request.form
 
     if 'username' not in userdata or 'password' not in userdata or 'email' not in userdata:
-        return ERROR_MISSING_INFO
-    
+        return ERROR_MISSING_INFO.to_dict(), ERROR_MISSING_INFO.to_dict()['err_id']
+
+    validation_result = validate_user_info(userdata)
+    if validation_result != True:
+        return validation_result, validation_result['err_id']
+
     if userdata['username'] in existing_usernames():
-        return ERROR_NAME_TAKEN
+        return ERROR_NAME_TAKEN.to_dict(), ERROR_NAME_TAKEN.to_dict()['err_id']
+ 
+    new_user = User(
+        username=userdata['username'],
+        email=userdata['email'],
+        password=userdata['password']
+    )
+ 
+    db.session.add(new_user)
+    db.session.commit()
+ 
+    # Send verification email
+    send_verification_email(userdata['email'])
 
-    if validate_user_info(userdata):
-
-        new_user = User(
-            username=userdata['username'],
-            email=userdata['email'],
-            password=userdata['password']
-        )
-
-        db.session.add(new_user)
-        db.session.commit()
-
-        # Send verification email
-        send_verification_email(userdata['email'])
-
-        # Show flash message after successful registration
-
-        # Redirect to the login page
-        return redirect('/login')
-    
-    else:
-        return validate_user_info(userdata), 400
+    # Redirect to the login page
+    return redirect("login", code=201)
 
 
 def send_verification_email(email):
@@ -185,11 +161,12 @@ def login():
         return render_template('login.html')
 
 
-@app.route('/bus_fares', methods=['GET'])
-def bus_fares():
-    return render_template('busfares.html')
+@app.route('/fares')
+def fares():
+    return render_template('fares.html')
 
 
+app.register_blueprint(swagger_blueprint)
 
 
 if __name__ == '__main__':
