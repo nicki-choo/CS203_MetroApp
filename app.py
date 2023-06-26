@@ -40,6 +40,7 @@ class User(db.Model):
     username = db.Column(db.String(20), nullable=False)
     email = db.Column(db.String(30), nullable=False)
     password = db.Column(db.String(20), nullable=False)
+    balance = db.Column(db.Float, default=0.0)
 
     def __init__(self, username, email, password):
         self.username = username
@@ -120,7 +121,7 @@ def register_user():
     db.session.commit()
  
     # Send verification email
-    send_verification_email(userdata['email'])
+    #send_verification_email(userdata['email'])
 
     # Redirect to the login page
     return redirect("login", code=201)
@@ -129,7 +130,7 @@ def register_user():
 def send_verification_email(email):
     msg = Message("Welcome to MetroBus",
                   sender='nickidummyacc@gmail.com',
-                  recipients=['270168718@yoobeestudent.ac.nz'])
+                  recipients=email)
     msg.body = 'Hello, your account has been registered successfully. Please verify your email.'
     mail.send(msg)
 
