@@ -22,7 +22,6 @@ app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
 app.config['MAIL_USE_SSL'] = True
 app.config['MAIL_USE_TLS'] = False
 
-db = SQLAlchemy(app)
 
 
 class User(db.Model):
