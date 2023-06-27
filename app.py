@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect, flash, url_for
+from flask import Flask, request, render_template, redirect, flash
 from flask_mail import Mail, Message
 from flask_sqlalchemy import SQLAlchemy
 import os
@@ -13,7 +13,6 @@ app.secret_key = 'your-secret-key'
 mail = Mail(app)
 load_dotenv()
 
-user_info = {}
 
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
@@ -89,10 +88,12 @@ def register():  # put application's code here
 @app.route('/top_up', methods=['GET'])
 def top_up():
     user_id = request.args.get('user_id', default=None)
+    # Retrieve the user object from the database
+    user = User.query.get(user_id)
 
     if user_id is None:
         flash("User ID not found", "error")
-        return redirect("/profile")
+        return redirect("/profile?/user_id=" + user.user.id)
 
     # Retrieve the user object from the database
     user = User.query.get(user_id)
@@ -107,23 +108,38 @@ def top_up():
 
 @app.route('/top_up', methods=['POST'])
 def process_payment():
-    user_id = request.args.get('user_id',default=None)
-
-    payment_data = request.form
+    user_id = request.args.get('user_id', default=None)
 
     if user_id is None:
         return "User ID not found"
 
-    new_payment = Payment(
-        balance=payment_data['balance'],
-        cc_name=payment_data['cc_name'],
-        cc_number=payment_data['cc_number'],
-        cc_exp=payment_data['cc_exp'],
-        cc_cvc=payment_data['cc_cvc'],
-        user_id=user_id
-    )
+    payment_data = request.form
 
-    db.session.add(new_payment)
+    existing_payment = Payment.query.filter_by(user_id=user_id).first()
+
+    if existing_payment:
+        # Update existing payment data
+        existing_payment.cc_name = payment_data['cc_name']
+        existing_payment.cc_number = payment_data['cc_number']
+        existing_payment.cc_exp = payment_data['cc_exp']
+        existing_payment.cc_cvc = payment_data['cc_cvc']
+
+        topup_amount = float(payment_data.get('balance', 0))
+        existing_payment.balance += topup_amount
+    else:
+        # Create new payment data
+        topup_amount = float(payment_data.get('balance', 0))
+
+        new_payment = Payment(
+            balance=topup_amount,
+            cc_name=payment_data['cc_name'],
+            cc_number=payment_data['cc_number'],
+            cc_exp=payment_data['cc_exp'],
+            cc_cvc=payment_data['cc_cvc'],
+            user_id=user_id
+        )
+        db.session.add(new_payment)
+
     db.session.commit()
 
     return render_template('topUpCard.html', user_id=user_id)
@@ -179,13 +195,8 @@ def home():
 def login():
     if request.method == 'POST':
         login_data = request.form
-        username = request.form['username']
-        email = request.form['email']
-        user = User.query.filter_by(username=login_data['username']).first()
 
-        # Store user information in the global dictionary
-        user_info['username'] = username
-        user_info['email'] = email
+        user = User.query.filter_by(username=login_data['username']).first()
 
         if user is None:
             flash("User does not exist!", "danger")
@@ -211,6 +222,7 @@ def fares():
 def profile():
     # Retrieve the username from the URL parameters
     username = request.args.get('username')
+    user_id = request.args.get('user_id')
 
     # Retrieve the email from the user database
     user = User.query.filter_by(username=username).first()
@@ -221,6 +233,10 @@ def profile():
     # Retrieve the balance from the payment database
     payment = Payment.query.filter_by(user_id=user_id).first()
     balance = payment.balance if payment else None
+
+    # Retrieve the updated balance from the payment database
+    updated_payment = Payment.query.filter_by(user_id=user_id).first()
+
 
     # Set the default value for balance if it is None
     balance = balance if balance is not None else "00.00"
