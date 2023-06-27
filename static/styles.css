@@ -4,14 +4,17 @@ html {
 
 body {
 background-image: linear-gradient(white, lightblue);
+background-size: 300% 300vh;
+background-repeat: no-repeat;
 }
 
 
 
-footer {
-    display: block;
-    float: bottom;
-    text-align: right;
+.footer-main {
+      position: relative;
+      text-align: right;
+      padding: 10px;
+      width: 100%;
 }
 
 
@@ -438,25 +441,16 @@ top: 673px;
 
 .line1 {
 position: absolute;
-width: 800px;
+width: 570px;
 height: 15px;
-left: 35px;
+left: 30px;
 top: 355px;
-color: #1A5E8F;
-}
-
-.line2 {
-position: absolute;
-width: 800px;
-height: 15px;
-left: 35px;
-top: 680px;
 color: #1A5E8F;
 }
 
 .topUp_button {
 position: absolute;
-width: 800px;
+width: 550px;
 height: 40px;
 left: 32px;
 top: 740px;
@@ -502,4 +496,8 @@ color: #FFFFFF;
 
 .fade-out {
   animation: fadeOut 6s forwards;
+}
+
+.column_color {
+    color: #1A5E8F;
 }

@@ -10,7 +10,7 @@ class Error:
         }
         
 ERROR_USERNAME = Error("MBA-01", "Invalid input for username")
-ERROR_EMAIL = Error("MBA-02", "Inlavid email address")
+ERROR_EMAIL = Error("MBA-02", "Invalid email address")
 ERROR_PASS = Error("MBA-03", "Password needs to be at least 8 characters")
 ERROR_NAME_TAKEN = Error("MBA-04", "Username already in use")
 ERROR_MISSING_INFO = Error("MBA-05", "Information is missing from the register form")

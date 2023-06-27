@@ -3,36 +3,37 @@
 <title>Top Up Credit</title>
 {% endblock %}
 {% block body %}
+<form action="/top_up" method="POST">
 <div class="col-lg-8 col-sm-12 position-relative translate-middle-x start-50"
-    style="margin-top: 50px ; padding: 50px; background-color: #f9f9f9;">
+    style="margin-top: 50px ; padding: 53px; background-color: #f9f9f9;">
     <div class="col-6 col-sm-12">
         <h4>How much would you like to top up?</h4>
         <div class="form-check mt-4 mb-2">
-            <input class="form-check-input" name="flexRadioDefault" type="radio" id="tenTopUp">
+            <input class="form-check-input" name="balance" type="radio" value="10.00" id="tenTopUp">
             <label class="form-check-label" for="tenTopUp">
                 $10.00
             </label>
         </div>
         <div class="form-check mb-2">
-            <input class="form-check-input" name="flexRadioDefault" type="radio" id="twentyTopUp">
+            <input class="form-check-input" name="balance" type="radio" value="20.00" id="twentyTopUp">
             <label class="form-check-label" for="twentyTopUp">
                 $20.00
             </label>
         </div>
         <div class="form-check mb-2">
-            <input class="form-check-input" name="flexRadioDefault" type="radio" id="fiftyTopUp">
+            <input class="form-check-input" name="balance" type="radio" value="50.00" id="fiftyTopUp">
             <label class="form-check-label" for="fiftyTopUp">
                 $50.00
             </label>
         </div>
         <div class="form-check mt-4">
-            <input class="form-check-input" name="flexRadioDefault" type="radio" id="custTopUp">
+            <input class="form-check-input" name="balance" type="radio" id="custTopUp">
             <label class="form-check-label" for="custTopUp">
                 Custom amount
             </label>
             <div class="input-group">
                 <span class="input-group-text">$</span>
-                <input type="text" class="form-control" aria-label="Custom Amount">
+                <input type="text" class="form-control" name="balance" aria-label="Custom Amount">
             </div>
         </div>
     </div>
@@ -40,10 +41,10 @@
     <div class="row align-items-center mb-2">
         <h1 style="margin-top: 20px; margin-bottom: 20px;">Payment</h1>
         <div class="col-auto">
-            <label for="cc-name" class="form-label">Cardholder's Name</label>
+            <label for="cc_name" class="cc_name">Cardholder's Name</label>
         </div>
         <div class="col-auto">
-            <input type="text" class="form-control" id="cc-name" required>
+            <input type="text" class="form-control" id="cc_name" name="cc_name" required>
         </div>
         <div class="col-auto">
             <span id="nameHelpInline" class="form-text">
@@ -56,10 +57,10 @@
     </div>
     <div class="row align-items-center mb-3">
         <div class="col-auto">
-            <label for="cc-number" class="form-label">Credit card number</label>
+            <label for="cc_number" class="form-label">Credit card number</label>
         </div>
         <div class="col-auto">
-            <input type="text" class="form-control" id="cc-number" placeholder="XXXX-XXXX-XXXX-XXXX" required>
+            <input type="text" class="form-control" id="cc_number" name="cc_number" placeholder="XXXX-XXXX-XXXX-XXXX" required>
         </div>
         <div class="invalid-feedback">
             Credit card number is required
@@ -67,15 +68,15 @@
     </div>
     <div class="row mt-3 mb-3 align-items-center">
         <div class="col-auto">
-            <label for="cc-expiration" class="form-label">Expiration Date</label>
-            <input id="cc-expiration" type="text" class="form-control" placeholder="MM/YY" required>
+            <label for="cc_exp" class="form-label">Expiration Date</label>
+            <input id="cc_exp" type="text" name="cc_exp" class="form-control" placeholder="MM/YY" required>
         </div>
         <div class="invalid-feedback">
             Expiration date required
         </div>
         <div class="col-auto">
-            <label for="cc-CCV" class="form-label">CCV no.</label>
-            <input id="cc-CCV" type="text" class="form-control" placeholder="XXX" required>
+            <label for="cc_cvc" class="form-label">CCV no.</label>
+            <input id="cc_cvc" type="text" name="cc_cvc" class="form-control" placeholder="XXX" required>
         </div>
         <div class="invalid-feedback">
             Security code required
@@ -88,10 +89,15 @@
         </div>
         <a href="#" class="link-disabled">
             <img class="float-end img-thumbnail" src="static/logos/paypal.png" alt="PayPal Logo"
-            style="max-width: 150px;">
+            style="max-width: 150px; position: absolute; left: 350px; top: 650px">
         </a>
+        <input type="hidden" name="user_id" value="{{ user_id }}">
     </div>
     <hr class="my-4 line2">
+    <a href="/profile">
     <button type="submit" class="topUp_button">Top Up</button>
+        </a>
 </div>
+</form>
+<br><br><br><br>
 {% endblock %}
