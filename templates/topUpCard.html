@@ -9,31 +9,31 @@
     <div class="col-6 col-sm-12">
         <h4>How much would you like to top up?</h4>
         <div class="form-check mt-4 mb-2">
-            <input class="form-check-input" name="tp_amount" type="radio" value="10" id="tenTopUp">
+            <input class="form-check-input" name="balance" type="radio" value="10.00" id="tenTopUp">
             <label class="form-check-label" for="tenTopUp">
                 $10.00
             </label>
         </div>
         <div class="form-check mb-2">
-            <input class="form-check-input" name="tp_amount" type="radio" value="20" id="twentyTopUp">
+            <input class="form-check-input" name="balance" type="radio" value="20.00" id="twentyTopUp">
             <label class="form-check-label" for="twentyTopUp">
                 $20.00
             </label>
         </div>
         <div class="form-check mb-2">
-            <input class="form-check-input" name="tp_amount" type="radio" value="50" id="fiftyTopUp">
+            <input class="form-check-input" name="balance" type="radio" value="50.00" id="fiftyTopUp">
             <label class="form-check-label" for="fiftyTopUp">
                 $50.00
             </label>
         </div>
         <div class="form-check mt-4">
-            <input class="form-check-input" name="tp_amount" type="radio" id="custTopUp">
+            <input class="form-check-input" name="balance" type="radio" id="custTopUp">
             <label class="form-check-label" for="custTopUp">
                 Custom amount
             </label>
             <div class="input-group">
                 <span class="input-group-text">$</span>
-                <input type="text" class="form-control" aria-label="Custom Amount">
+                <input type="text" class="form-control" name="balance" aria-label="Custom Amount">
             </div>
         </div>
     </div>
@@ -94,7 +94,9 @@
         <input type="hidden" name="user_id" value="{{ user_id }}">
     </div>
     <hr class="my-4 line2">
+    <a href="/profile">
     <button type="submit" class="topUp_button">Top Up</button>
+        </a>
 </div>
 </form>
 <br><br><br><br>

@@ -12,7 +12,7 @@
       style="margin-top: 150px; padding: 50px; background-color: #f8f9fa;">
     <form action="/login" method="post"><!--Put in the form location here-->
         <div class="mb-4 row">
-            <label for="staticUserName" class="form-label">Userame</label>
+            <label for="staticUserName" class="form-label">Username</label>
             <input type="text" class="form-control" id="staticUserName" name="username" required>
             <div class="invalid-feedback">
                 <p><b>Field is empty!</b></p>
@@ -20,13 +20,15 @@
         </div>
         <div class="mb-2 row">
             <label for="inputPassword" class="form-label">Password</label>
-            <input type="password" class="form-control" id="inputPassword" required>
+            <input type="password" class="form-control" id="inputPassword" name="password" required>
             <div class="invalid-feedback">
                 <p><b>Field is empty!</b></p>
             </div>
         </div>
+        <a href="/profile">
         <button type="submit" class="btn btn-primary position-relative translate-middle-x start-50"
                 style="margin-top: 20px;">Login</button>
+        </a>
     </form>
     <a href="/register" style="margin-top: 50px;">
         <h5 style="margin-top: 25px; text-align: center;" class="position-relative translate-middle-x start-50">

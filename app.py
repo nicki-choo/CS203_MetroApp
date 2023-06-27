@@ -1,8 +1,10 @@
-from flask import Flask, request, render_template, redirect, flash, url_for, jsonify
+from flask import Flask, request, render_template, redirect, flash
 from flask_mail import Mail, Message
-from flask_sqlalchemy import SQLAlchemy, session
+from flask_sqlalchemy import SQLAlchemy
 import os
 from dotenv import load_dotenv
+
+
 from error import ERROR_EMAIL, ERROR_PASS, ERROR_USERNAME, ERROR_NAME_TAKEN, ERROR_MISSING_INFO
 
 
@@ -22,8 +24,7 @@ app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
 app.config['MAIL_USE_SSL'] = True
 app.config['MAIL_USE_TLS'] = False
 
-db = app(SQLAlchemy)
-
+db = SQLAlchemy(app)
 
 
 class User(db.Model):
@@ -32,17 +33,16 @@ class User(db.Model):
     username = db.Column(db.String(20), nullable=False)
     email = db.Column(db.String(30), nullable=False)
     password = db.Column(db.String(20), nullable=False)
-    balance = db.Column(db.Float, default=0.0)
+
 
     def __init__(self, username, email, password):
         self.username = username
         self.email = email
         self.password = password
 
-
 class Payment(db.Model):
     __tablename__ = 'payment'
-    tp_amount = db.Column(db.Float, primary_key=True)
+    balance = db.Column(db.Float, primary_key=True)
     cc_name = db.Column(db.String(100), nullable=False)
     cc_number = db.Column(db.String(100), nullable=False)
     cc_exp = db.Column(db.String(100), nullable=False)
@@ -50,8 +50,8 @@ class Payment(db.Model):
     users = db.relationship('User', backref='payment')
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
-    def __init__(self, tp_amount, cc_name, cc_number, cc_exp, cc_cvc, user_id):
-        self.tp_amount = tp_amount
+    def __init__(self, balance, cc_name, cc_number, cc_exp, cc_cvc, user_id):
+        self.balance = balance
         self.cc_name = cc_name
         self.cc_number = cc_number
         self.cc_exp = cc_exp
@@ -87,6 +87,27 @@ def register():  # put application's code here
 @app.route('/top_up', methods=['GET'])
 def top_up():
     return render_template('topUpCard.html')
+
+@app.route('/top_up', methods=['POST'])
+def process_payment():
+    payment_data = request.form
+
+    new_payment = Payment(
+        balance=payment_data['balance'],
+        cc_name=payment_data['cc_name'],
+        cc_number=payment_data['cc_number'],
+        cc_exp=payment_data['cc_exp'],
+        cc_cvc=payment_data['cc_cvc'],
+        user_id=payment_data['user_id']
+    )
+
+    db.session.add(new_payment)
+    db.session.commit()
+
+    return render_template('topUpCard.html')
+
+
+
 
 
 @app.route('/register', methods=['POST'])
@@ -136,28 +157,47 @@ def home():
 def login():
     if request.method == 'POST':
         login_data = request.form
-        username_data = db.execute("SELECT username FROM users WHERE username=:username", {"username":login_data['username']}).fetchone()
-        password_data = db.execute("SELECT password FROM users WHERE username=:username", {"username":login_data['username']}).fetchone()
-        
-        if username_data is None:
+        user = User.query.filter_by(username=login_data['username']).first()
+
+        if user is None:
             flash("User does not exist!", "danger")
             return redirect('/login')
         else:
-            if login_data['password'] != password_data:
+            if login_data['password'] != user.password:
                 flash("Login information is incorrect", "warning")
                 return redirect('/login')
             else:
                 flash("Login Success!", "success")
-                return redirect('/')
-        
+                # Redirect to the profile route passing the logged-in username
+                return redirect("/profile?username=" + user.username)
+
     else:
         return render_template('login.html')
 
 
-@app.route('/bus_fares')
+@app.route('/bus_fares', methods=['GET'])
 def fares():
     return render_template('busfares.html')
 
+@app.route('/profile', methods=['GET'])
+def profile():
+    # Retrieve the username from the URL parameters
+    username = request.args.get('username')
+
+    # Retrieve the email from the user database
+    user = User.query.filter_by(username=username).first()
+    email = user.email if user else None
+
+    user_id = user.id if user else None
+
+    # Retrieve the balance from the payment database
+    payment = Payment.query.filter_by(user_id=user.id).first()
+    balance = payment.balance if payment else None
+
+    # Set the default value for balance if it is None
+    balance = balance if balance is not None else "00.00"
+
+    return render_template('profile.html', username=username, email=email, user_id=user_id, balance=balance)
 
 
 
