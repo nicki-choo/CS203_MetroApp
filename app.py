@@ -88,8 +88,14 @@ def register():  # put application's code here
 def top_up():
     return render_template('topUpCard.html')
 
+
 @app.route('/top_up', methods=['POST'])
 def process_payment():
+    user_id = request.args.get('user_id', default=None)
+
+    if user_id is None:
+        return "User ID not found"
+
     payment_data = request.form
 
     new_payment = Payment(
@@ -98,13 +104,13 @@ def process_payment():
         cc_number=payment_data['cc_number'],
         cc_exp=payment_data['cc_exp'],
         cc_cvc=payment_data['cc_cvc'],
-        user_id=payment_data['user_id']
+        user_id=user_id
     )
 
     db.session.add(new_payment)
     db.session.commit()
 
-    return render_template('topUpCard.html')
+    return render_template('topUpCard.html', user_id=user_id)
 
 
 
