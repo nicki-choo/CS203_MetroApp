@@ -1,26 +1,15 @@
 from flask import Flask, request, render_template, redirect, flash, url_for, jsonify
 from flask_mail import Mail, Message
 from flask_sqlalchemy import SQLAlchemy, session
+from sqlalchemy import select
 import os
 from dotenv import load_dotenv
 from error import ERROR_EMAIL, ERROR_PASS, ERROR_USERNAME, ERROR_NAME_TAKEN, ERROR_MISSING_INFO
-from flask_swagger_ui import get_swaggerui_blueprint
 
 app = Flask(__name__)
 app.secret_key = 'your-secret-key'
 mail = Mail(app)
 load_dotenv()
-
-SWAGGER_URL = '/api/docs'
-API_URL = '/static/swagger.json'
-
-swagger_blueprint = get_swaggerui_blueprint(
-    SWAGGER_URL,
-    API_URL,
-    config={
-        'app_name': "Metro App Revamp"
-    }
-)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -31,9 +20,7 @@ app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
 app.config['MAIL_USE_SSL'] = True
 app.config['MAIL_USE_TLS'] = False
 
-db = app(SQLAlchemy)
-
-
+db = SQLAlchemy(app)
 
 class User(db.Model):
     __tablename__ = 'user'
@@ -66,8 +53,9 @@ class Payment(db.Model):
         self.cc_exp = cc_exp
         self.cc_cvc = cc_cvc
         self.user_id = user_id
+            
+current_user = None
     
-
 def validate_user_info(data):
     if 5 < len(data['username']) < 20:
         if '@' in data['email']:
@@ -89,7 +77,7 @@ def existing_usernames():
 
 
 @app.route('/register', methods=['GET'])
-def register():  # put application's code here
+def register():
     return render_template('register.html')
 
 
@@ -145,30 +133,39 @@ def home():
 def login():
     if request.method == 'POST':
         login_data = request.form
-        username_data = db.execute("SELECT username FROM users WHERE username=:username", {"username":login_data['username']}).fetchone()
-        password_data = db.execute("SELECT password FROM users WHERE username=:username", {"username":login_data['username']}).fetchone()
+        #print(login_data)
+        find_user = User.query.count()
+        find_username = select(User.id).where(User.username == login_data['username'])
+        find_password = select(User.password).where(User.username)
         
-        if username_data is None:
-            flash("User does not exist!", "danger")
-            return redirect('/login')
-        else:
-            if login_data['password'] != password_data:
-                flash("Login information is incorrect", "warning")
-                return redirect('/login')
-            else:
-                flash("Login Success!", "success")
-                return redirect('/')
+        #username_data = db.execute("SELECT username FROM users WHERE username=:username", {"username":login_data['username']}).fetchone()
+        #password_data = db.execute("SELECT password FROM users WHERE username=:username", {"username":login_data['username']}).fetchone()
         
-    else:
+        #if find_username is None:
+            
+        
+        # if username_data is None:
+        #     flash("User does not exist!", "danger")
+        #     return redirect('/login')
+        # else:
+        #     if login_data['password'] != password_data:
+        #         flash("Login information is incorrect", "warning")
+        #         return redirect('/login')
+        #     else:
+        #         flash("Login Success!", "success")
+        #         current_user = User()
+        #         return redirect('/')
+        return f"{find_user}"
+        
+    elif request.method == 'GET':
         return render_template('login.html')
+    else:
+        return {"Request Error": "Invalid Request Method"}, 500
 
 
 @app.route('/fares')
 def fares():
     return render_template('fares.html')
-
-
-app.register_blueprint(swagger_blueprint)
 
 
 if __name__ == '__main__':
