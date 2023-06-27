@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect, flash
+from flask import Flask, request, render_template, redirect, flash, url_for
 from flask_mail import Mail, Message
 from flask_sqlalchemy import SQLAlchemy
 import os
@@ -13,6 +13,7 @@ app.secret_key = 'your-secret-key'
 mail = Mail(app)
 load_dotenv()
 
+user_info = {}
 
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
@@ -42,13 +43,14 @@ class User(db.Model):
 
 class Payment(db.Model):
     __tablename__ = 'payment'
-    balance = db.Column(db.Float, primary_key=True)
+    payment_id = db.Column(db.Integer, primary_key=True)
+    balance = db.Column(db.Float(0.00), nullable=False)
     cc_name = db.Column(db.String(100), nullable=False)
     cc_number = db.Column(db.String(100), nullable=False)
     cc_exp = db.Column(db.String(100), nullable=False)
     cc_cvc = db.Column(db.String(100), nullable=False)
-    users = db.relationship('User', backref='payment')
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    users = db.relationship('User', backref='payment', lazy=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     def __init__(self, balance, cc_name, cc_number, cc_exp, cc_cvc, user_id):
         self.balance = balance
@@ -86,17 +88,31 @@ def register():  # put application's code here
 
 @app.route('/top_up', methods=['GET'])
 def top_up():
-    return render_template('topUpCard.html')
+    user_id = request.args.get('user_id', default=None)
+
+    if user_id is None:
+        flash("User ID not found", "error")
+        return redirect("/profile")
+
+    # Retrieve the user object from the database
+    user = User.query.get(user_id)
+
+    if not user:
+        flash("User not found", "error")
+        return redirect("/profile")
+
+    return render_template('topUpCard.html', user_id=user_id, username=user.username)
+
 
 
 @app.route('/top_up', methods=['POST'])
 def process_payment():
-    user_id = request.args.get('user_id', default=None)
+    user_id = request.args.get('user_id',default=None)
+
+    payment_data = request.form
 
     if user_id is None:
         return "User ID not found"
-
-    payment_data = request.form
 
     new_payment = Payment(
         balance=payment_data['balance'],
@@ -163,7 +179,13 @@ def home():
 def login():
     if request.method == 'POST':
         login_data = request.form
+        username = request.form['username']
+        email = request.form['email']
         user = User.query.filter_by(username=login_data['username']).first()
+
+        # Store user information in the global dictionary
+        user_info['username'] = username
+        user_info['email'] = email
 
         if user is None:
             flash("User does not exist!", "danger")
@@ -197,7 +219,7 @@ def profile():
     user_id = user.id if user else None
 
     # Retrieve the balance from the payment database
-    payment = Payment.query.filter_by(user_id=user.id).first()
+    payment = Payment.query.filter_by(user_id=user_id).first()
     balance = payment.balance if payment else None
 
     # Set the default value for balance if it is None
