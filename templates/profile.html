@@ -1,28 +1,27 @@
 {% extends 'base.html' %}
 
 {% block head %}
-{% endblock %}
-
 <title>User Profile</title>
-
+{% endblock %}
 {% block body %}
 <br>
 <div class="container">
-        <h1>User Profile</h1>
-        <hr>
-
-        <div class="row">
-            <div class="col-md-6">
-                <h4>Username: {{ username }}</h4>
-                <p>Email: {{ email }}</p>
-                <p>User ID: #{{user_id}}</p>
-            </div>
-            <div class="col-md-6">
-                <h4>Account Balance: ${{ balance }}</h4>
-                <a href="/top_up?user_id={{user_id}}" class="btn btn-primary">Top Up</a>
-            </div>
+    <h1>User Profile</h1>
+    <hr>
+    <div class="row">
+        <div class="col-md-6">
+            <h4>Username: {{ username }}</h4>
+            <p>Email: {{ email }}</p>
+            <p>User ID: #{{user_id}}</p>
+        </div>
+        <div class="col-md-6">
+            <h4>Account Balance: ${{ balance }}</h4>
+            <a href="/top_up" class="btn btn-primary">Top Up</a>
         </div>
     </div>
+    <div>
+        <a href="/logout" class="btn btn-primary">Log Out</a>
+    </div>
+</div>
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-
 {% endblock %}
