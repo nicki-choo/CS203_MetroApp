@@ -2,6 +2,7 @@
 {% block head %}
 <title>Top Up Credit</title>
 {% endblock %}
+
 {% block body %}
 <form action="/top_up?user_id={{user_id}}" method="POST">
 <div class="col-lg-8 col-sm-12 position-relative translate-middle-x start-50"
@@ -9,25 +10,25 @@
     <div class="col-6 col-sm-12">
         <h4>How much would you like to top up?</h4>
         <div class="form-check mt-4 mb-2">
-            <input class="form-check-input" name="topup_amount" type="radio" value="10.00" id="tenTopUp">
+            <input class="form-check-input" name="balance" type="radio" value="10.00" id="tenTopUp">
             <label class="form-check-label" for="tenTopUp">
                 $10.00
             </label>
         </div>
         <div class="form-check mb-2">
-            <input class="form-check-input" name="topup_amount" type="radio" value="20.00" id="twentyTopUp">
+            <input class="form-check-input" name="balance" type="radio" value="20.00" id="twentyTopUp">
             <label class="form-check-label" for="twentyTopUp">
                 $20.00
             </label>
         </div>
         <div class="form-check mb-2">
-            <input class="form-check-input" name="topup_amount" type="radio" value="50.00" id="fiftyTopUp">
+            <input class="form-check-input" name="balance" type="radio" value="50.00" id="fiftyTopUp">
             <label class="form-check-label" for="fiftyTopUp">
                 $50.00
             </label>
         </div>
         <div class="form-check mt-4">
-            <input class="form-check-input" name="topup_amount" type="radio" id="custTopUp">
+            <input class="form-check-input" name="balance" type="radio" id="custTopUp">
             <label class="form-check-label" for="custTopUp">
                 Custom amount
             </label>

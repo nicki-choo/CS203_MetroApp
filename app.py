@@ -85,66 +85,74 @@ def register():  # put application's code here
     return render_template('register.html')
 
 
-@app.route('/top_up', methods=['GET'])
+@app.route('/top_up', methods=['GET', 'POST'])
 def top_up():
     user_id = request.args.get('user_id', default=None)
     # Retrieve the user object from the database
     user = User.query.get(user_id)
 
-    if user_id is None:
-        flash("User ID not found", "error")
-        return redirect("/profile?/user_id=" + user.user.id)
-
-    # Retrieve the user object from the database
-    user = User.query.get(user_id)
-
-    if not user:
+    if user_id is None or not user:
         flash("User not found", "error")
-        return redirect("/profile")
+        return redirect("/top_up?user_id=" + str(user_id))
+
+    if request.method == 'POST':
+        # Process the payment transaction
+        payment_data = request.form
+        existing_payment = Payment.query.filter_by(user_id=user_id).first()
+
+        if existing_payment:
+            # Update existing payment data
+            existing_payment.balance = payment_data['balance']
+            existing_payment.cc_name = payment_data['cc_name']
+            existing_payment.cc_number = payment_data['cc_number']
+            existing_payment.cc_exp = payment_data['cc_exp']
+            existing_payment.cc_cvc = payment_data['cc_cvc']
+
+            # Calculate the top-up amount
+            balance = float(payment_data.get('balance', 0))
+            existing_payment.balance += balance
+        else:
+            # Create new payment data
+            balance = float(payment_data.get('balance', 0))
+
+            new_payment = Payment(
+                balance=payment_data['balance'],
+                cc_name=payment_data['cc_name'],
+                cc_number=payment_data['cc_number'],
+                cc_exp=payment_data['cc_exp'],
+                cc_cvc=payment_data['cc_cvc'],
+                user_id=user_id
+            )
+            db.session.add(new_payment)
+
+        db.session.commit()
+
+        # Redirect to the profile page after successful payment
+        return redirect("/profile?user_id=" + str(user_id))
 
     return render_template('topUpCard.html', user_id=user_id, username=user.username)
 
 
 
-@app.route('/top_up', methods=['POST'])
-def process_payment():
-    user_id = request.args.get('user_id', default=None)
 
-    if user_id is None:
-        return "User ID not found"
-
-    payment_data = request.form
-
-    existing_payment = Payment.query.filter_by(user_id=user_id).first()
-
-    if existing_payment:
-        # Update existing payment data
-        existing_payment.cc_name = payment_data['cc_name']
-        existing_payment.cc_number = payment_data['cc_number']
-        existing_payment.cc_exp = payment_data['cc_exp']
-        existing_payment.cc_cvc = payment_data['cc_cvc']
-
-        topup_amount = float(payment_data.get('balance', 0))
-        existing_payment.balance += topup_amount
-    else:
-        # Create new payment data
-        topup_amount = float(payment_data.get('balance', 0))
-
-        new_payment = Payment(
-            balance=topup_amount,
-            cc_name=payment_data['cc_name'],
-            cc_number=payment_data['cc_number'],
-            cc_exp=payment_data['cc_exp'],
-            cc_cvc=payment_data['cc_cvc'],
-            user_id=user_id
-        )
-        db.session.add(new_payment)
-
-    db.session.commit()
-
-    return render_template('topUpCard.html', user_id=user_id)
-
-
+# @app.route('/top_up', methods=['POST'])
+# def process_payment():
+#     payment_data = request.form
+#     user_id = request.args.get('user_id', default=None)
+#
+#
+#     new_payment = Payment(
+#         balance=payment_data['balance'],
+#         cc_name=payment_data['cc_name'],
+#         cc_number=payment_data['cc_number'],
+#         cc_exp=payment_data['cc_exp'],
+#         cc_cvc=payment_data['cc_cvc'],
+#         user_id=user_id
+#     )
+#     db.session.add(new_payment)
+#     db.session.commit()
+#
+#     return render_template('topUpCard.html')
 
 
 
@@ -233,10 +241,6 @@ def profile():
     # Retrieve the balance from the payment database
     payment = Payment.query.filter_by(user_id=user_id).first()
     balance = payment.balance if payment else None
-
-    # Retrieve the updated balance from the payment database
-    updated_payment = Payment.query.filter_by(user_id=user_id).first()
-
 
     # Set the default value for balance if it is None
     balance = balance if balance is not None else "00.00"
