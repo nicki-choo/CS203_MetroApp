@@ -189,23 +189,24 @@ def fares():
 
 @app.route('/profile', methods=['GET'])
 def profile():
-    # Retrieve the username from the URL parameters
-    username = request.args.get('username')
+    if current_user['username'] != None:
+        # Retrieve the username from the URL parameters
+        username = current_user['username']
 
-    # Retrieve the email from the user database
-    user = User.query.filter_by(username=username).first()
-    email = user.email if user else None
+        # Retrieve the email from the user database
+        user = User.query.filter_by(username=username).first()
+        email = current_user['email']
 
-    user_id = user.id if user else None
+        user_id = current_user['id']
 
-    # Retrieve the balance from the payment database
-    payment = Payment.query.filter_by(user_id=user.id).first()
-    balance = payment.balance if payment else None
+        # Retrieve the balance from the payment database
+        payment = Payment.query.filter_by(user_id=user.id).first()
+        balance = payment.balance if payment else None
 
-    # Set the default value for balance if it is None
-    balance = balance if balance is not None else "00.00"
+        # Set the default value for balance if it is None
+        balance = balance if balance is not None else "00.00"
 
-    return render_template('profile.html', username=username, email=email, user_id=user_id, balance=balance)
+        return render_template('profile.html', username=username, email=email, user_id=user_id, balance=balance)
 
 
 @app.route('/logout')
