@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 from error import ERROR_EMAIL, ERROR_PASS, ERROR_USERNAME, ERROR_NAME_TAKEN, ERROR_MISSING_INFO
 
 app = Flask(__name__)
+mail = Mail(app)
 app.secret_key = 'your-secret-key'
 load_dotenv()
 
