@@ -37,7 +37,8 @@ class User(db.Model):
 
 class Payment(db.Model):
     __tablename__ = 'payment'
-    balance = db.Column(db.Float, primary_key=True)
+    payment_id = db.Column(db.Integer, primary_key=True)
+    balance = db.Column(db.Float(0.00), nullable=False)
     cc_name = db.Column(db.String(100), nullable=False)
     cc_number = db.Column(db.String(100), nullable=False)
     cc_exp = db.Column(db.String(100), nullable=False)
@@ -58,6 +59,7 @@ current_user = {
     'username': None,
     'email': None
 }
+
     
 def validate_user_info(data):
     if 5 < len(data['username']) < 20:
@@ -83,30 +85,52 @@ def existing_usernames():
 def register():
     return render_template('register.html')
 
+@app.route('/top_up', methods=['GET'])
+def top_up():
+    user_id = current_user['id']
 
-@app.route('/top_up', methods=['POST', 'GET'])
+    if user_id is None:
+        return "User ID is not found"
+    return render_template('topUpCard.html', user_id=user_id)
+
+
+
+@app.route('/top_up', methods=['POST'])
 def process_payment():
-    if request.method == 'POST':
-        payment_data = request.form
+    payment_data = request.form
+    user_id = current_user['id']
+
+    if user_id is None:
+        return "User ID is not found"
+
+
+    existing_payment = Payment.query.filter_by(user_id=user_id).first()
+
+    if existing_payment:
+        # Update existing payment data
+        existing_payment.balance = float(existing_payment.balance) + float(payment_data['balance'])
+        existing_payment.cc_name = payment_data['cc_name']
+        existing_payment.cc_number = payment_data['cc_number']
+        existing_payment.cc_exp = payment_data['cc_exp']
+        existing_payment.cc_cvc = payment_data['cc_cvc']
+    else:
+        # Create new payment data
+        balance = float(payment_data.get('balance', 0))
 
         new_payment = Payment(
-            balance=payment_data['balance'],
+            balance=balance,
             cc_name=payment_data['cc_name'],
             cc_number=payment_data['cc_number'],
             cc_exp=payment_data['cc_exp'],
             cc_cvc=payment_data['cc_cvc'],
-            user_id=payment_data['user_id']
+            user_id=user_id
         )
-
         db.session.add(new_payment)
-        db.session.commit()
 
-        return redirect(url_for('profile'))
-    
-    elif request.method == 'GET':
-        return render_template('topUpCard.html')
-    else:
-        return {"error": 'Method Not Allowed'}
+    db.session.commit()
+
+    return redirect(url_for('profile', user_id=user_id))
+
 
 
 @app.route('/register', methods=['POST'])

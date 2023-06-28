@@ -4,7 +4,7 @@
 {% endblock %}
 
 {% block body %}
-<form action="/top_up?user_id={{user_id}}" method="POST">
+<form action="/top_up?/user_id={{user_id}}" method="POST">
 <div class="col-lg-8 col-sm-12 position-relative translate-middle-x start-50"
     style="margin-top: 50px ; padding: 53px; background-color: #f9f9f9;">
     <div class="col-6 col-sm-12">
@@ -94,8 +94,10 @@
         </a>
     </div>
     <hr class="my-4 line2">
-     <a href=/profile?username={{username}}&user_id={{user_id}}&email={{email}}" class="btn btn-primary position-relative translate-middle-x start-50"
-   style="margin-top: 20px;">Top Up</a>
+    <a href="/profile?username={{username}}&user_id={{user_id}}&email={{email}}">
+        <button type="submit" class="btn btn-primary position-relative translate-middle-x start-50"
+                style="margin-top: 20px;">Top Up</button>
+    </a>
 </div>
 </form>
 <br><br><br><br>
