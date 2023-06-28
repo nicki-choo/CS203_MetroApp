@@ -207,6 +207,8 @@ def profile():
         balance = balance if balance is not None else "00.00"
 
         return render_template('profile.html', username=username, email=email, user_id=user_id, balance=balance)
+    else:
+        return redirect(url_for('login'))
 
 
 @app.route('/logout')
@@ -217,7 +219,7 @@ def logout():
         current_user[i] = None
         
     # Directing the user back to the home page after logout
-    return redirect(url_for('home'), code=200)
+    return redirect(url_for('home'))
     
 
 if __name__ == '__main__':
