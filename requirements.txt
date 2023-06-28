@@ -2,4 +2,3 @@ Flask
 python-dotenv
 Flask-Mail
 flask_sqlalchemy
-dotenv
