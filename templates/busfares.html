@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Bus Fares</title>
+{%  endblock %}
+
+{% block body %}
+
+  <div class="container mt-4">
+    <h1>Fares</h1>
+
+    <table class="table table-bordered">
+      <thead class="column_color">
+        <tr>
+          <th scope="col">Zone</th>
+          <th scope="col">Adult</th>
+          <th scope="col">Child</th>
+          <th scope="col">Student</th>
+          <th scope="col">Senior</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">1</th>
+          <td>$3.25</td>
+          <td>$1.60</td>
+          <td>$2.50</td>
+          <td>$1.60</td>
+        </tr>
+        <tr>
+          <th scope="row">2</th>
+          <td>$4.00</td>
+          <td>$2.00</td>
+          <td>$2.50</td>
+          <td>$2.00</td>
+        </tr>
+        <tr>
+          <th scope="row">3</th>
+          <td>$5.50</td>
+          <td>$2.70</td>
+          <td>$2.50</td>
+          <td>$2.70</td>
+        </tr>
+        <tr>
+          <th scope="row">4</th>
+          <td>$5.50</td>
+          <td>$2.70</td>
+          <td>$2.50</td>
+          <td>$2.70</td>
+        </tr>
+        <tr>
+          <th scope="row">5</th>
+          <td>$5.50</td>
+          <td>$2.70</td>
+          <td>$2.50</td>
+          <td>$2.70</td>
+        </tr>
+        <tr>
+          <th scope="row">6</th>
+          <td>$6.00</td>
+          <td>$3.00</td>
+          <td>$2.50</td>
+          <td>$3.00</td>
+        </tr>
+        <tr>
+          <th scope="row">7</th>
+          <td>$6.50</td>
+          <td>$3.30</td>
+          <td>$2.50</td>
+          <td>$3.30</td>
+        </tr>
+        <tr>
+          <th scope="row">8</th>
+          <td>$7.00</td>
+          <td>$3.50</td>
+          <td>$2.50</td>
+          <td>$3.50</td>
+        </tr>
+      </tbody>
+    </table>
+
+
+
+    <p class="font-italic">* Fares effective from 1st February 2023.</p>
+    <br>
+
+    <h3>Fare Map</h3>
+
+  <div style="padding-bottom: 15px;">
+  <img src="static/logos/Fare_Map.jpeg" alt="Fare Map">
+  </div>
+<br>
+
+    <h3>Concession Fares</h3>
+    <p>Concession fares are available for eligible tertiary students, seniors, and children aged 5-15 years.</p>
+    <p><strong>Student:</strong> Tertiary students must have an approved tertiary concession card.</p>
+    <p><strong>Senior:</strong> SuperGold cardholders travel free between 9:00 am and 3:00 pm on weekdays, and all day weekends and public holidays.</p>
+  <br>
+
+    <h3>Smartcards</h3>
+    <p>Smartcards provide an easy and convenient way to pay for your travel. You can load money onto the card and simply tap on and off when boarding and alighting. Smartcards can be purchased at selected retailers.</p>
+    <p><strong>Adult:</strong> $10 initial purchase cost (includes $5 travel credit)</p>
+    <p><strong>Child:</strong> $10 initial purchase cost (includes $5 travel credit)</p>
+  <br>
+
+
+    <h3>SuperGold Card</h3>
+    <p>The SuperGold card is a concession card for eligible seniors. It provides free travel on buses between 9:00 am and 3:00 pm on weekdays, and all day weekends and public holidays.</p>
+    <p><strong>SuperGold Card:</strong> Free</p>
+  <br>
+  </div>
+
+
+
+
+{% endblock %}
+

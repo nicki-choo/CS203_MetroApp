@@ -1,3 +1,4 @@
+
 {% extends 'base.html' %}
 
 {% block head %}
@@ -7,43 +8,44 @@
 
 {% block body %}
 <div id="clock"></div>
-<div class="container-sm col-6 position-absolute top-50 start-50 translate-middle">
-    <div class="mb-3 row">
-        <label for="staticUserName" class="col-sm-2 col-form-label">Email</label>
-        <input type="text" class="form-control" id="staticUserName">
-    </div>
-    <div class="mb-3 row">
-        <label for="inputPassword" class="form-label">Password</label>
-        <input type="password" class="form-control" id="inputPassword">
-    </div>
-    <button type="submit" class="btn btn-primary position-relative translate-middle-x start-50">Submit</button>
+<div  class="col-xs-10 col-lg-6 col-sm-10 position-relative translate-middle-x start-50"
+      style="margin-top: 150px; padding: 50px; background-color: #f8f9fa;">
+    <form action="/login" method="post">
+        <div class="mb-4 row">
+            <label for="staticUserName" class="form-label">Username</label>
+            <input type="text" class="form-control" id="staticUserName" name="username" required>
+            <div class="invalid-feedback">
+                <p><b>Field is empty!</b></p>
+            </div>
+        </div>
+        <div class="mb-2 row">
+            <label for="inputPassword" class="form-label">Password</label>
+            <input type="password" class="form-control" id="inputPassword" name="password" required>
+            <div class="invalid-feedback">
+                <p><b>Field is empty!</b></p>
+            </div>
+        </div>
+        <a href="/profile">
+        <button type="submit" class="btn btn-primary position-relative translate-middle-x start-50"
+                style="margin-top: 20px;">Login</button>
+        </a>
+    </form>
+    <a href="/register" style="margin-top: 50px;">
+        <h5 style="margin-top: 25px; text-align: center;" class="position-relative translate-middle-x start-50">
+            Create an account
+        </h5>
+    </a>
 </div>
-
-{% with messages = get_flashed_messages() %}
-  {% if messages %}
-    <div id="flash-message" class="alert alert-success fade-out">
-      Registration successful! Please check your email for verification
-    </div>
-  {% endif %}
+<br><br><br><br>
+<!--{% with messages = get_flashed_messages() %}-->
+<!--    {% if messages %}-->
+<!--    <div id="flash-message" class="alert alert-success fade-out">-->
+<!--        Registration successful! Please check your email for verification-->
+<!--    </div>-->
+    {% endif %}
 {% endwith %}
-
-<!--<div class="container">-->
-<!--    <div class="clock"></div>-->
-<!--    <form>-->
-<!--    <div class="form-group">-->
-<!--        <label for="username">Username:</label>-->
-<!--        <input type="text" id="username" name="username">-->
-<!--    </div>-->
-<!--    <div class="form-group">-->
-<!--        <label for="password">Password:</label>-->
-<!--        <input type="password" id="password" name="password">-->
-<!--    </div>-->
-
-
-<!--    <button type="submit" class="login_button">LOG IN</button>-->
-<!--        <a href="https://metrobus-app.onrender.com/user_info"><h2 class="register_card">Create an account</h2> </a>-->
-
-<!--    </form>-->
-
-<!--</div>-->
 {% endblock %}
+
+
+
+
