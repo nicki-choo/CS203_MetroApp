@@ -10,8 +10,8 @@ app.secret_key = 'your-secret-key'
 # mail = Mail(app)
 # load_dotenv()
 
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
-# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 # app.config['MAIL_PORT'] = 465
 # app.config['MAIL_USERNAME'] = 'nickidummyacc@gmail.com'
