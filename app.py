@@ -89,11 +89,6 @@ def existing_usernames():
     return usernames
 
 
-@app.route('/register', methods=['GET'])
-def register():  # put application's code here
-    return render_template('register.html')
-
-
 @app.route('/top_up', methods=['GET', 'POST'])
 def top_up():
     user_id = request.args.get('user_id', default=None)
@@ -166,7 +161,7 @@ def register_user():
         db.session.add(new_user)
         db.session.commit()
     
-        send_verification_email(userdata['email'])
+        # send_verification_email(userdata['email'])
         
         return redirect(url_for('login'))
     
@@ -176,7 +171,7 @@ def register_user():
     else:
         return {"Method Not Allowed": 'The method used for requesting the page is not allowed'}
 
-
+# Not sure whats wrong here, but we had to leave it out else, it just errors
 def send_verification_email(email):
     msg = Message("Welcome to MetroBus",
                   sender='nickidummyacc@gmail.com',
@@ -199,14 +194,12 @@ def login():
     if request.method == 'POST':
         login_data = request.form
         user = User.query.filter_by(username=login_data['username']).first()
-        print(user)
         
         current_user['id'] = user.id
         current_user['email'] = user.email
         current_user['username'] = user.username
 
         if user is None:
-            print(False)
             return redirect(url_for('login'))
         else:
             if login_data['password'] != user.password:
@@ -215,7 +208,7 @@ def login():
             else:
                 flash("Login Success!", "success")
                 # Redirect to the profile route passing the logged-in username
-                return redirect("/profile?username=" + user.username)
+                return redirect(url_for('profile'))
 
     elif request.method == 'GET':
         return render_template('login.html')

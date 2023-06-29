@@ -5,9 +5,7 @@
 <title>Login</title>
 {%  endblock %}
 
-
 {% block body %}
-<div id="clock"></div>
 <div  class="col-xs-10 col-lg-6 col-sm-10 position-relative translate-middle-x start-50"
       style="margin-top: 150px; padding: 50px; background-color: #f8f9fa;">
     <form action="/login" method="post">
@@ -25,10 +23,8 @@
                 <p><b>Field is empty!</b></p>
             </div>
         </div>
-        <a href="/profile">
         <button type="submit" class="btn btn-primary position-relative translate-middle-x start-50"
                 style="margin-top: 20px;">Login</button>
-        </a>
     </form>
     <a href="/register" style="margin-top: 50px;">
         <h5 style="margin-top: 25px; text-align: center;" class="position-relative translate-middle-x start-50">
