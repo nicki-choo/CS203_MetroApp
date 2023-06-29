@@ -7,17 +7,18 @@ import error
 
 app = Flask(__name__)
 app.secret_key = 'your-secret-key'
-# mail = Mail(app)
-# load_dotenv()
+mail = Mail(app)
+load_dotenv()
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-# app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-# app.config['MAIL_PORT'] = 465
-# app.config['MAIL_USERNAME'] = 'nickidummyacc@gmail.com'
-# app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
-# app.config['MAIL_USE_SSL'] = True
-# app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = 'nickidummyacc@gmail.com'
+app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
+app.config['MAIL_USE_SSL'] = True
+app.config['MAIL_USE_TLS'] = False
+mail = Mail(app)
 
 db = SQLAlchemy(app)
 
@@ -161,7 +162,9 @@ def register_user():
         db.session.add(new_user)
         db.session.commit()
     
-        # send_verification_email(userdata['email'])
+        send_verification_email([userdata['email']])
+
+        flash("your account has been registered successfully. Please verify your email.")
         
         return redirect(url_for('login'))
     
@@ -172,12 +175,12 @@ def register_user():
         return {"Method Not Allowed": 'The method used for requesting the page is not allowed'}
 
 
-# def send_verification_email(email):
-#     msg = Message("Welcome to MetroBus",
-#                   sender='nickidummyacc@gmail.com',
-#                   recipients=email)
-#     msg.body = 'Hello, your account has been registered successfully. Please verify your email. (This is also a test program for a university project)'
-#     mail.send(msg)
+def send_verification_email(email):
+    msg = Message("Welcome to MetroBus",
+                  sender='nickidummyacc@gmail.com',
+                  recipients=email)
+    msg.body = 'Hello, your account has been registered successfully. Please verify your email. (This is also a test program for a university project)'
+    mail.send(msg)
 
 
 @app.route('/')
