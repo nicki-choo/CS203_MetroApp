@@ -161,7 +161,7 @@ def register_user():
         db.session.add(new_user)
         db.session.commit()
     
-        send_verification_email(userdata['email'])
+        # send_verification_email(userdata['email'])
         
         return redirect(url_for('login'))
     
