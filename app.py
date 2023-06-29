@@ -3,12 +3,11 @@ from flask_mail import Mail, Message
 from flask_sqlalchemy import SQLAlchemy
 import os
 from dotenv import load_dotenv
-
-from error import ERROR_EMAIL, ERROR_PASS, ERROR_USERNAME, ERROR_NAME_TAKEN, ERROR_MISSING_INFO
+import error
 
 app = Flask(__name__)
-mail = Mail(app)
 app.secret_key = 'your-secret-key'
+mail = Mail(app)
 load_dotenv()
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
@@ -19,7 +18,6 @@ app.config['MAIL_USERNAME'] = 'nickidummyacc@gmail.com'
 app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
 app.config['MAIL_USE_SSL'] = True
 app.config['MAIL_USE_TLS'] = False
-mail = Mail(app)
 
 db = SQLAlchemy(app)
 
@@ -44,8 +42,8 @@ class Payment(db.Model):
     cc_number = db.Column(db.String(100), nullable=False)
     cc_exp = db.Column(db.String(100), nullable=False)
     cc_cvc = db.Column(db.String(100), nullable=False)
-    users = db.relationship('User', backref='payment')
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    users = db.relationship('User', backref='payment', lazy=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     def __init__(self, balance, cc_name, cc_number, cc_exp, cc_cvc, user_id):
         self.balance = balance
@@ -60,16 +58,25 @@ current_user = {
     'username': None,
     'email': None
 }
-
     
 def validate_user_info(data):
     if 5 < len(data['username']) < 20:
         if '@' in data['email']:
             if len(data['password']) > 8:
                 return True
-            return ERROR_PASS.to_dict()
-        return ERROR_EMAIL.to_dict()
-    return ERROR_USERNAME.to_dict()
+            return error.ERROR_PASS.to_dict()
+        return error.ERROR_EMAIL.to_dict()
+    return error.ERROR_USERNAME.to_dict()
+
+
+def card_validation(data):
+    if len(data['cc_number']) == 16:
+        if '/' in data['cc_exp']:
+            if len(data['cc_cvc']) == 3:
+                return True
+            return error.ERROR_CC_CVC.to_dict()
+        return error.ERROR_CC_EXP.to_dict()
+    return error.ERROR_CC_NUM.to_dict()
 
 
 def existing_usernames():
@@ -83,83 +90,91 @@ def existing_usernames():
 
 
 @app.route('/register', methods=['GET'])
-def register():
+def register():  # put application's code here
     return render_template('register.html')
 
-@app.route('/top_up', methods=['GET'])
+
+@app.route('/top_up', methods=['GET', 'POST'])
 def top_up():
-    user_id = current_user['id']
+    user_id = request.args.get('user_id', default=None)
+    # Retrieve the user object from the database
+    user = User.query.get(user_id)
 
-    if user_id is None:
-        return "User ID is not found"
-    return render_template('topUpCard.html', user_id=user_id)
+    if user_id is None or not user:
+        flash("User not found", "error")
+        return redirect("/top_up?user_id=" + str(user_id))
+
+    if request.method == 'POST':
+        # Process the payment transaction
+        payment_data = request.form
+        existing_payment = Payment.query.filter_by(user_id=user_id).first()
+
+        if existing_payment:
+            # Update existing payment data
+            existing_payment.balance = payment_data['balance']
+            existing_payment.cc_name = payment_data['cc_name']
+            existing_payment.cc_number = payment_data['cc_number']
+            existing_payment.cc_exp = payment_data['cc_exp']
+            existing_payment.cc_cvc = payment_data['cc_cvc']
+
+            # Calculate the top-up amount
+            balance = float(payment_data.get('balance', 0))
+            existing_payment.balance += balance
+        else:
+            # Create new payment data
+            balance = float(payment_data.get('balance', 0))
+
+            new_payment = Payment(
+                balance=payment_data['balance'],
+                cc_name=payment_data['cc_name'],
+                cc_number=payment_data['cc_number'],
+                cc_exp=payment_data['cc_exp'],
+                cc_cvc=payment_data['cc_cvc'],
+                user_id=user_id
+            )
+            db.session.add(new_payment)
+
+        db.session.commit()
+
+        # Redirect to the profile page after successful payment
+        return redirect("/profile?user_id=" + str(user_id))
+
+    return render_template('topUpCard.html', user_id=user_id, username=user.username)
 
 
-
-@app.route('/top_up', methods=['POST'])
-def process_payment():
-    payment_data = request.form
-    user_id = current_user['id']
-
-    if user_id is None:
-        return "User ID is not found"
-
-
-    existing_payment = Payment.query.filter_by(user_id=user_id).first()
-
-    if existing_payment:
-        # Update existing payment data
-        existing_payment.balance = float(existing_payment.balance) + float(payment_data['balance'])
-        existing_payment.cc_name = payment_data['cc_name']
-        existing_payment.cc_number = payment_data['cc_number']
-        existing_payment.cc_exp = payment_data['cc_exp']
-        existing_payment.cc_cvc = payment_data['cc_cvc']
-    else:
-        # Create new payment data
-        balance = float(payment_data.get('balance', 0))
-
-        new_payment = Payment(
-            balance=balance,
-            cc_name=payment_data['cc_name'],
-            cc_number=payment_data['cc_number'],
-            cc_exp=payment_data['cc_exp'],
-            cc_cvc=payment_data['cc_cvc'],
-            user_id=user_id
-        )
-        db.session.add(new_payment)
-
-    db.session.commit()
-
-    return redirect(url_for('profile', user_id=user_id))
-
-
-
-@app.route('/register', methods=['POST'])
+@app.route('/register', methods=['POST', 'GET'])
 def register_user():
-    userdata = request.form
+    if request.method == 'POST':
+        userdata = request.form
 
-    if 'username' not in userdata or 'password' not in userdata or 'email' not in userdata:
-        return ERROR_MISSING_INFO.to_dict(), ERROR_MISSING_INFO.to_dict()['err_id']
+        if 'username' not in userdata or 'password' not in userdata or 'email' not in userdata:
+            return error.ERROR_MISSING_INFO.to_dict(), error.ERROR_MISSING_INFO.to_dict()['err_id']
 
-    validation_result = validate_user_info(userdata)
-    if validation_result != True:
-        return validation_result, validation_result['err_id']
+        validation_result = validate_user_info(userdata)
+        if validation_result != True:
+            return validation_result, validation_result['err_id']
 
-    if userdata['username'] in existing_usernames():
-        return ERROR_NAME_TAKEN.to_dict(), ERROR_NAME_TAKEN.to_dict()['err_id']
- 
-    new_user = User(
-        username=userdata['username'],
-        email=userdata['email'],
-        password=userdata['password']
-    )
- 
-    db.session.add(new_user)
-    db.session.commit()
- 
-    send_verification_email(userdata['email'])
+        if userdata['username'] in existing_usernames():
+            return error.ERROR_NAME_TAKEN.to_dict(), error.ERROR_NAME_TAKEN.to_dict()['err_id']
     
-    return redirect("login", code=201)
+        new_user = User(
+            username=userdata['username'],
+            email=userdata['email'],
+            password=userdata['password']
+        )
+    
+        db.session.add(new_user)
+        db.session.commit()
+    
+        send_verification_email(userdata['email'])
+        
+        return redirect(url_for('login'))
+    
+    elif request.method == 'GET':
+        return render_template('register.html')
+    
+    else:
+        return {"Method Not Allowed": 'The method used for requesting the page is not allowed'}
 
 
 def send_verification_email(email):
@@ -204,8 +219,6 @@ def login():
 
     elif request.method == 'GET':
         return render_template('login.html')
-    else:
-        return {"Request Error": "Invalid Request Method"}, 500
 
 
 @app.route('/bus_fares', methods=['GET'])
@@ -232,6 +245,8 @@ def profile():
         balance = balance if balance is not None else "00.00"
 
         return render_template('profile.html', username=username, email=email, user_id=user_id, balance=balance)
+    else:
+        return redirect(url_for('login'))
 
 
 @app.route('/logout')
@@ -242,7 +257,7 @@ def logout():
         current_user[i] = None
         
     # Directing the user back to the home page after logout
-    return redirect(url_for('home'), code=200)
+    return redirect(url_for('home'))
     
 
 if __name__ == '__main__':
