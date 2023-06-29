@@ -3,8 +3,7 @@ from flask_mail import Mail, Message
 from flask_sqlalchemy import SQLAlchemy
 import os
 from dotenv import load_dotenv
-
-from error import ERROR_EMAIL, ERROR_PASS, ERROR_USERNAME, ERROR_NAME_TAKEN, ERROR_MISSING_INFO
+import error
 
 app = Flask(__name__)
 app.secret_key = 'your-secret-key'
@@ -64,9 +63,19 @@ def validate_user_info(data):
         if '@' in data['email']:
             if len(data['password']) > 8:
                 return True
-            return ERROR_PASS.to_dict()
-        return ERROR_EMAIL.to_dict()
-    return ERROR_USERNAME.to_dict()
+            return error.ERROR_PASS.to_dict()
+        return error.ERROR_EMAIL.to_dict()
+    return error.ERROR_USERNAME.to_dict()
+
+
+def card_validation(data):
+    if len(data['cc_number']) == 16:
+        if '/' in data['cc_exp']:
+            if len(data['cc_cvc']) == 3:
+                return True
+            return error.ERROR_CC_CVC.to_dict()
+        return error.ERROR_CC_EXP.to_dict()
+    return error.ERROR_CC_NUM.to_dict()
 
 
 def existing_usernames():
@@ -79,29 +88,27 @@ def existing_usernames():
     return usernames
 
 
-@app.route('/register', methods=['GET'])
-def register():
-    return render_template('register.html')
-
-
 @app.route('/top_up', methods=['POST', 'GET'])
 def process_payment():
     if request.method == 'POST':
         payment_data = request.form
+        
+        if card_validation(payment_data) == True:
+            new_payment = Payment(
+                balance=payment_data['balance'],
+                cc_name=payment_data['cc_name'],
+                cc_number=payment_data['cc_number'],
+                cc_exp=payment_data['cc_exp'],
+                cc_cvc=payment_data['cc_cvc'],
+                user_id=payment_data['user_id']
+            )
 
-        new_payment = Payment(
-            balance=payment_data['balance'],
-            cc_name=payment_data['cc_name'],
-            cc_number=payment_data['cc_number'],
-            cc_exp=payment_data['cc_exp'],
-            cc_cvc=payment_data['cc_cvc'],
-            user_id=payment_data['user_id']
-        )
+            db.session.add(new_payment)
+            db.session.commit()
 
-        db.session.add(new_payment)
-        db.session.commit()
-
-        return redirect(url_for('profile'))
+            return redirect(url_for('profile'))
+        else:
+            return card_validation(payment_data)
     
     elif request.method == 'GET':
         return render_template('topUpCard.html')
@@ -109,32 +116,39 @@ def process_payment():
         return {"error": 'Method Not Allowed'}
 
 
-@app.route('/register', methods=['POST'])
+@app.route('/register', methods=['POST', 'GET'])
 def register_user():
-    userdata = request.form
+    if request.method == 'POST':
+        userdata = request.form
 
-    if 'username' not in userdata or 'password' not in userdata or 'email' not in userdata:
-        return ERROR_MISSING_INFO.to_dict(), ERROR_MISSING_INFO.to_dict()['err_id']
+        if 'username' not in userdata or 'password' not in userdata or 'email' not in userdata:
+            return error.ERROR_MISSING_INFO.to_dict(), error.ERROR_MISSING_INFO.to_dict()['err_id']
 
-    validation_result = validate_user_info(userdata)
-    if validation_result != True:
-        return validation_result, validation_result['err_id']
+        validation_result = validate_user_info(userdata)
+        if validation_result != True:
+            return validation_result, validation_result['err_id']
 
-    if userdata['username'] in existing_usernames():
-        return ERROR_NAME_TAKEN.to_dict(), ERROR_NAME_TAKEN.to_dict()['err_id']
- 
-    new_user = User(
-        username=userdata['username'],
-        email=userdata['email'],
-        password=userdata['password']
-    )
- 
-    db.session.add(new_user)
-    db.session.commit()
- 
-    send_verification_email(userdata['email'])
+        if userdata['username'] in existing_usernames():
+            return error.ERROR_NAME_TAKEN.to_dict(), error.ERROR_NAME_TAKEN.to_dict()['err_id']
     
-    return redirect("login", code=201)
+        new_user = User(
+            username=userdata['username'],
+            email=userdata['email'],
+            password=userdata['password']
+        )
+    
+        db.session.add(new_user)
+        db.session.commit()
+    
+        send_verification_email(userdata['email'])
+        
+        return redirect(url_for('login'))
+    
+    elif request.method == 'GET':
+        return render_template('register.html')
+    
+    else:
+        return {"Method Not Allowed": 'The method used for requesting the page is not allowed'}
 
 
 def send_verification_email(email):
