@@ -2,8 +2,9 @@
 {% block head %}
 <title>Top Up Credit</title>
 {% endblock %}
+
 {% block body %}
-<form action="/top_up" method="POST">
+<form action="/top_up?user_id={{user_id}}" method="POST">
 <div class="col-lg-8 col-sm-12 position-relative translate-middle-x start-50"
     style="margin-top: 50px ; padding: 53px; background-color: #f9f9f9;">
     <div class="col-6 col-sm-12">
@@ -91,10 +92,11 @@
             <img class="float-end img-thumbnail" src="static/logos/paypal.png" alt="PayPal Logo"
             style="max-width: 150px; position: absolute; left: 350px; top: 650px">
         </a>
-        <input type="hidden" name="user_id" value="{{ user_id }}">
     </div>
     <hr class="my-4 line2">
     <button class="btn btn-primary" type="submit">Top Up</button>
+    <a href=/profile?username={{username}}&user_id={{user_id}}&email={{email}}" class="btn btn-primary position-relative translate-middle-x start-50"
+   style="margin-top: 20px;">Top Up</a>
 </div>
 </form>
 <br><br><br><br>

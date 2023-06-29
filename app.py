@@ -36,13 +36,14 @@ class User(db.Model):
 
 class Payment(db.Model):
     __tablename__ = 'payment'
-    balance = db.Column(db.Float, primary_key=True)
+    payment_id = db.Column(db.Integer, primary_key=True)
+    balance = db.Column(db.Float(0.00), nullable=False)
     cc_name = db.Column(db.String(100), nullable=False)
     cc_number = db.Column(db.String(100), nullable=False)
     cc_exp = db.Column(db.String(100), nullable=False)
     cc_cvc = db.Column(db.String(100), nullable=False)
-    users = db.relationship('User', backref='payment')
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    users = db.relationship('User', backref='payment', lazy=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     def __init__(self, balance, cc_name, cc_number, cc_exp, cc_cvc, user_id):
         self.balance = balance
@@ -88,32 +89,57 @@ def existing_usernames():
     return usernames
 
 
-@app.route('/top_up', methods=['POST', 'GET'])
-def process_payment():
+@app.route('/register', methods=['GET'])
+def register():  # put application's code here
+    return render_template('register.html')
+
+
+@app.route('/top_up', methods=['GET', 'POST'])
+def top_up():
+    user_id = request.args.get('user_id', default=None)
+    # Retrieve the user object from the database
+    user = User.query.get(user_id)
+
+    if user_id is None or not user:
+        flash("User not found", "error")
+        return redirect("/top_up?user_id=" + str(user_id))
+
     if request.method == 'POST':
+        # Process the payment transaction
         payment_data = request.form
-        
-        if card_validation(payment_data) == True:
+        existing_payment = Payment.query.filter_by(user_id=user_id).first()
+
+        if existing_payment:
+            # Update existing payment data
+            existing_payment.balance = payment_data['balance']
+            existing_payment.cc_name = payment_data['cc_name']
+            existing_payment.cc_number = payment_data['cc_number']
+            existing_payment.cc_exp = payment_data['cc_exp']
+            existing_payment.cc_cvc = payment_data['cc_cvc']
+
+            # Calculate the top-up amount
+            balance = float(payment_data.get('balance', 0))
+            existing_payment.balance += balance
+        else:
+            # Create new payment data
+            balance = float(payment_data.get('balance', 0))
+
             new_payment = Payment(
                 balance=payment_data['balance'],
                 cc_name=payment_data['cc_name'],
                 cc_number=payment_data['cc_number'],
                 cc_exp=payment_data['cc_exp'],
                 cc_cvc=payment_data['cc_cvc'],
-                user_id=payment_data['user_id']
+                user_id=user_id
             )
-
             db.session.add(new_payment)
-            db.session.commit()
 
-            return redirect(url_for('profile'))
-        else:
-            return card_validation(payment_data)
-    
-    elif request.method == 'GET':
-        return render_template('topUpCard.html')
-    else:
-        return {"error": 'Method Not Allowed'}
+        db.session.commit()
+
+        # Redirect to the profile page after successful payment
+        return redirect("/profile?user_id=" + str(user_id))
+
+    return render_template('topUpCard.html', user_id=user_id, username=user.username)
 
 
 @app.route('/register', methods=['POST', 'GET'])
@@ -193,8 +219,6 @@ def login():
 
     elif request.method == 'GET':
         return render_template('login.html')
-    else:
-        return {"Request Error": "Invalid Request Method"}, 500
 
 
 @app.route('/bus_fares', methods=['GET'])
